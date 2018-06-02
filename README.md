@@ -1,12 +1,79 @@
-# Readable API Server
+# Readable
 
-This is the starter project for the final assessment project for Udacity's Redux course where you will build a content and comment web app. Users will be able to post content to predefined categories, comment on their posts and other users' posts, and vote on posts and comments. Users will also be able to edit and delete posts and comments.
+UDACITY - PROGRAMA NANODEGREE  
+Projeto faz parte da grade do curso [DESENVOLVEDOR REACT](https://br.udacity.com/course/react-nanodegree--nd019).
 
-This repository includes the code for the backend API Server that you'll use to develop and interact with the front-end portion of the project.
+<hr>
 
-## Start Developing
+## Descrição do Projeto
 
-To get started developing right away:
+Blog Udacity, permite ler, classificar, criar, editar e excluir posts relacionados aos assuntos listados. 
+Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e grande parte do ecossistema.
+
+* Requisitos
+
+    - Sistema operacional: Windows, Mac ou Linux
+    - Browser (Google Chrome, Firefox, etc...)
+    - [Node.JS](https://nodejs.org/en/)
+
+* Front
+    * Projeto iniciado com [create-react-app](https://github.com/facebook/create-react-app)
+
+    * Dependencias
+        - Material UI - `npm install @material-ui/core`
+        - Material Icon - `npm install @material-ui/icons`
+        - React Loading - `npm install react-loading`
+        - React Router - `npm install react-router-dom`
+        - React Redux - `npm install react-redux`
+        - Redux - `npm install redux`
+        - Redux Logger - `npm install redux-logger` 
+        - Redux Thunk - `npm install redux-thunk`
+
+    * Estrutura e organização
+        ```
+            - src
+                - containers
+                    - Home
+                        - types 
+                        - action
+                        - reducer
+                        - Home
+                        - index
+                    - ReactPage
+                        - types 
+                        - action
+                        - reducer
+                        - ReactPage
+                        - index
+                    - ReduxPage
+                        - types 
+                        - action
+                        - reducer
+                        - ReduxPage
+                        - index
+                    - UdacityPage
+                        - types 
+                        - action
+                        - reducer
+                        - UdacityPage
+                        - index
+                - components
+                    - Template 
+                - utils
+                    - api.js 
+                    - helpers.js
+                - store 
+                - App.js (Components + React Router)
+        ```
+    
+* Back
+    * API disponibilizada pela Udacity.
+
+<hr >
+
+## Inicie o Projeto
+
+* Clone o repositório
 
 * Install and start the API server
     - `cd api-server`
@@ -17,6 +84,15 @@ To get started developing right away:
     - `cd frontend`
     - `npm start`
 
-## API Server
+## Iniciar projeto - Terminal
+* escolher diretório (exemplo) `cd Documents`
+* clonar repositório `git clone https://github.com/bucceroni/myReads.git`
+* instalar dependências do projeto `npm install`
+* iniciar servidor `npm start`
+* acessar URL `http://localhost:3000/`
+* 
+<hr>
+
+## API
 
 Information about the API server and how to use it can be found in its [README file](api-server/README.md).
