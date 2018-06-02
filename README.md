@@ -28,42 +28,37 @@ Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e gran
         - Redux - `npm install redux`
         - Redux Logger - `npm install redux-logger` 
         - Redux Thunk - `npm install redux-thunk`
+        - Axios - `npm install axios`
 
     * Estrutura e organização
         ```
-            - src
-                - containers
-                    - Home
-                        - types 
-                        - action
-                        - reducer
-                        - Home
-                        - index
-                    - ReactPage
-                        - types 
-                        - action
-                        - reducer
-                        - ReactPage
-                        - index
-                    - ReduxPage
-                        - types 
-                        - action
-                        - reducer
-                        - ReduxPage
-                        - index
-                    - UdacityPage
-                        - types 
-                        - action
-                        - reducer
-                        - UdacityPage
-                        - index
-                - components
-                    - Template 
-                - utils
-                    - api.js 
-                    - helpers.js
-                - store 
-                - App.js (Components + React Router)
+            -src
+                -components
+                    -Template
+                        IconHome.js
+                        IconReact.js
+                        IconRedux.js
+                        IconUdacity.js
+                        Template.js
+                -containers
+                    -Home
+                        -actions 
+                            HomeActions.js
+                            HomeApi.js
+                            types.js
+                        -reducers
+                            HomeReducer.js
+                        Home.js
+                        index.js
+                    -ReactPage
+                    -ReduxPage
+                    -UdacityPage
+                -store
+                    configureStore.js
+                    rootReducer.js
+                App.js
+                index.css
+                index.js
         ```
     
 * Back
@@ -73,24 +68,20 @@ Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e gran
 
 ## Inicie o Projeto
 
-* Clone o repositório
+* Clone o repositório (Terminal)
+    - escolher diretório (exemplo) `cd Documents`
+    - clonar repositório `git clone https://github.com/bucceroni/readable.git`
 
-* Install and start the API server
+* API(Terminal)
     - `cd api-server`
-    - `npm install`
-    - `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-    - `create-react-app frontend`
+    - Instalar dependências `npm install`
+    - Iniciar API`node server`
+* Front(Em outra janela do terminal)
     - `cd frontend`
-    - `npm start`
-
-## Iniciar projeto - Terminal
-* escolher diretório (exemplo) `cd Documents`
-* clonar repositório `git clone https://github.com/bucceroni/myReads.git`
-* instalar dependências do projeto `npm install`
-* iniciar servidor `npm start`
-* acessar URL `http://localhost:3000/`
-* 
+    - Instalar dependências `npm install`
+    - Iniciar API`npm start`
+    - acessar URL `http://localhost:3000/`
+ 
 <hr>
 
 ## API
