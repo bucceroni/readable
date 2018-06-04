@@ -5,6 +5,8 @@ import * as actions from "./actions/HomeActions";
 import { withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
 import styles from "./styles";
+import Post from '../../components/Post'
+import { Typography } from "@material-ui/core";
 
 class Home extends Component {
   constructor(props) {
@@ -19,13 +21,16 @@ class Home extends Component {
   }
 
   render() {
-    const { posts, categories } = this.props;
-    console.log("posts: ", posts);
-    console.log("categories: ", categories);
+    //const { posts, categories } = this.props;
+    const { posts } = this.props;
 
     return (
       <div>
-        <p>Home</p>
+        <Typography variant="display1" gutterBottom>Home</Typography>
+
+        {posts.map(post => 
+        <Post title={post.title} author={post.author} body={post.body} commentCount={post.commentCount} voteScore={post.voteScore}/>
+      )}
       </div>
     );
   }

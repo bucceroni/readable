@@ -5,7 +5,7 @@ import Home from "./containers/Home";
 import ReactPage from "./containers/ReactPage/ReactPage";
 import ReduxPage from "./containers/ReduxPage/ReduxPage";
 import UdacityPage from "./containers/UdacityPage/UdacityPage";
-import Template from "../src/components/Template/Template";
+import Template from "../src/components/Template";
 
 class App extends Component {
   render() {

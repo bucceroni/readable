@@ -72,18 +72,22 @@ Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e gran
     - escolher diretório (exemplo) `cd Documents`
     - clonar repositório `git clone https://github.com/bucceroni/readable.git`
 
-* API(Terminal)
+* API (Terminal)
     - `cd api-server`
     - Instalar dependências `npm install`
-    - Iniciar API`node server`
-* Front(Em outra janela do terminal)
+    - Iniciar API `node server`
+* API (Heroku)
+    - Heroku é uma plataforma de serviço em nuvem (PaaS) suportando várias linguagens de programação.
+    - Para facilitar o desenvolvimento do projeto foi utilizado o Heroku para hospedagem do back "api-server".
+    - Endpoit `https://api-server-readable.herokuapp.com"`
+
+* Front (Em outra janela do terminal)
     - `cd frontend`
     - Instalar dependências `npm install`
-    - Iniciar API`npm start`
+    - Iniciar API `npm start`
     - acessar URL `http://localhost:3000/`
  
 <hr>
 
 ## API
-
 Information about the API server and how to use it can be found in its [README file](api-server/README.md).

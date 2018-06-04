@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api = "http://localhost:3001";
+const api = "https://api-server-readable.herokuapp.com";
 
 const headers = {
   Accept: "application/json",

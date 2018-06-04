@@ -8,7 +8,6 @@ const styles = theme => ({
     fontSize: 24,
     width: "1em",
     height: "1em",
-    paddingRight: "20px",
     display: "inline-block",
     fill: "currentColor",
     flexShrink: 0,

@@ -102,6 +102,9 @@ const styles = theme => ({
   },
   iconWhite: {
     color: "#FFFFFF"
+  },
+  iconText: {
+    padding: "0 40px"
   }
 });
 
@@ -175,28 +178,28 @@ class Template extends React.Component {
               <ListItemIcon>
                 <IconHome />
               </ListItemIcon>
-              <ListItemText primary="Home" />
+              <ListItemText className={classes.iconText} primary="Home" />
             </ListItem>
 
             <ListItem button component={Link} to="/react">
               <ListItemIcon>
                 <IconReact />
               </ListItemIcon>
-              <ListItemText  primary="React" />
+              <ListItemText className={classes.iconText}  primary="React" />
             </ListItem>
 
             <ListItem component={Link} to="/redux" button>
               <ListItemIcon>
                 <IconRedux />
               </ListItemIcon>
-              <ListItemText primary="Redux" />
+              <ListItemText className={classes.iconText} primary="Redux" />
             </ListItem>
 
             <ListItem button component={Link} to="/udacity">
               <ListItemIcon>
                 <IconUdacity />
               </ListItemIcon>
-              <ListItemText primary="Udacity" />
+              <ListItemText className={classes.iconText} primary="Udacity" />
             </ListItem>
           </List>
         </Drawer>
