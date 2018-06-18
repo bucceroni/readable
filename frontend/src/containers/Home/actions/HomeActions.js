@@ -18,3 +18,39 @@ export function getPosts() {
     });
   };
 }
+
+export function incrementVoteScore(id) {
+  const vote = "upVote";
+
+  return async (dispatch, getState) => {
+    const post = await api.postVoteScore(id, vote);
+    const posts = getState().home.posts.map(item => {
+      if (item.id === post.id) {
+        item.voteScore = post.voteScore;
+      }
+      return item;
+    });
+    dispatch({
+      type: types.INCREMENT_VOTE_SCORE,
+      payload: posts
+    });
+  };
+}
+
+export function decrementVoteScore(id) {
+  const vote = "downVote";
+
+  return async (dispatch, getState) => {
+    const post = await api.postVoteScore(id, vote);
+    const posts = getState().home.posts.map(item => {
+      if (item.id === post.id) {
+        item.voteScore = post.voteScore;
+      }
+      return item;
+    });
+    dispatch({
+      type: types.DECREMENT_VOTE_SCORE,
+      payload: posts
+    });
+  };
+}

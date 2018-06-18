@@ -7,10 +7,11 @@ const headers = {
   Authorization: "whatever-you-want"
 };
 
-
 class Home {
+  // `GET /categories` | Get all of the categories available for the app. List is found in `categories.js`. 
+  //                     Feel free to extend this list as you desire.
   static async getCategories() {
-    const res = await axios.get(`${api}/categories`, {headers});
+    const res = await axios.get(`${api}/categories`, { headers });
     if (res.status >= 200 && res.status <= 207) {
       return res.data.categories;
     } else {
@@ -18,8 +19,23 @@ class Home {
     }
   }
 
+  // `GET /posts` | Get all of the posts. Useful for the main page when no category is selected.
   static async getPosts() {
-    const res = await axios.get(`${api}/posts`, {headers});
+    const res = await axios.get(`${api}/posts`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
+  // `POST /posts/:id` | Used for voting on a post. | **option** - [String]: Either `"upVote"` or `"downVote"`.
+  static async postVoteScore(id, vote) {
+    const res = await axios.post(
+      `${api}/posts/${id}`,
+      { option: vote },
+      { headers }
+    );
     if (res.status >= 200 && res.status <= 207) {
       return res.data;
     } else {
@@ -29,12 +45,13 @@ class Home {
 }
 export default Home;
 
-// `GET /categories` | Get all of the categories available for the app. List is found in `categories.js`. Feel free to extend this list as you desire. |  |
+
+
+// | Endpoints       | Usage          | Params         |
+// |-----------------|----------------|----------------|
 // | `GET /:category/posts` | Get all of the posts for a particular category. |  |
-// | `GET /posts` | Get all of the posts. Useful for the main page when no category is selected. |  |
 // | `POST /posts` | Add a new post. | **id** - UUID should be fine, but any unique id will work <br> **timestamp** - [Timestamp] Can in whatever format you like, you can use `Date.now()` if you like. <br> **title** - [String] <br> **body** - [String] <br> **author** - [String] <br> **category** -  Any of the categories listed in `categories.js`. Feel free to extend this list as you desire. |
 // | `GET /posts/:id` | Get the details of a single post. | |
-// | `POST /posts/:id` | Used for voting on a post. | **option** - [String]: Either `"upVote"` or `"downVote"`. |
 // | `PUT /posts/:id` | Edit the details of an existing post. | **title** - [String] <br> **body** - [String] |
 // | `DELETE /posts/:id` | Sets the deleted flag for a post to 'true'. <br> Sets the parentDeleted flag for all child comments to 'true'. | |
 // | `GET /posts/:id/comments` | Get all the comments for a single post. | |

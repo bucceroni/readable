@@ -1,12 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+
 import { connect } from "react-redux";
-import * as actions from "./actions/HomeActions";
-import { withStyles } from "@material-ui/core/styles";
 import { bindActionCreators } from "redux";
-import styles from "./styles";
-import Post from '../../components/Post'
+import * as actions from "./actions/HomeActions";
+
 import { Typography } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+
+import Post from "../../components/Post";
+import SelectSort from "../../components/SelectSort";
+
+import styles from "./styles";
 
 class Home extends Component {
   constructor(props) {
@@ -16,7 +21,7 @@ class Home extends Component {
 
   componentDidMount() {
     const { actions } = this.props;
-    actions.getCategories();
+    //actions.getCategories();
     actions.getPosts();
   }
 
@@ -26,11 +31,23 @@ class Home extends Component {
 
     return (
       <div>
-        <Typography variant="display1" gutterBottom>Home</Typography>
+        <Typography variant="display1" gutterBottom>
+          Home
+        </Typography>
+        <SelectSort />
 
-        {posts.map(post => 
-        <Post title={post.title} author={post.author} body={post.body} commentCount={post.commentCount} voteScore={post.voteScore}/>
-      )}
+        {posts.map(post => (
+          <Post
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            author={post.author}
+            body={post.body}
+            commentCount={post.commentCount}
+            voteScore={post.voteScore}
+            date={post.timestamp}
+          />
+        ))}
       </div>
     );
   }
@@ -38,8 +55,8 @@ class Home extends Component {
 
 Home.propTypes = {
   actions: PropTypes.object.isRequired,
-  posts: PropTypes.array,
-  categories: PropTypes.array
+  posts: PropTypes.array
+  //categories: PropTypes.array
 };
 
 const mapStateToProps = state => {
@@ -59,6 +76,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withStyles(styles, { withTheme: true })(Home)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles, { withTheme: true })(Home));

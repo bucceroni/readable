@@ -19,6 +19,16 @@ export default function reduce(state = initialState, action) {
         ...state,
         posts: payload
       };
+      case `${types.INCREMENT_VOTE_SCORE}`:
+      return {
+        ...state,
+        posts: payload
+      };
+      case `${types.DECREMENT_VOTE_SCORE}`:
+      return {
+        ...state,
+        posts: payload
+      };
     default:
       return state;
   }
