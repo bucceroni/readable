@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Home from "./containers/Home";
+import Home from "./containers/Home/Home";
+import UdacityPage from "./containers/UdacityPage/UdacityPage";
 import ReactPage from "./containers/ReactPage/ReactPage";
 import ReduxPage from "./containers/ReduxPage/ReduxPage";
-import UdacityPage from "./containers/UdacityPage/UdacityPage";
+import NewPost from "./containers/NewPost/NewPost";
 import Template from "../src/components/Template";
 
 class App extends Component {
@@ -14,9 +15,10 @@ class App extends Component {
         <Template>
           <Switch>
             <Route path="/" exact={true} component={Home} />
+            <Route path="/udacity" component={UdacityPage} />
             <Route path="/react" component={ReactPage} />
             <Route path="/redux" component={ReduxPage} />
-            <Route path="/udacity" component={UdacityPage} />
+            <Route path="/newPost" component={NewPost} />
           </Switch>
         </Template>
       </BrowserRouter>

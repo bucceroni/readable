@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as actions from "../containers/Home/actions/HomeActions";
+import * as actions from "../actions/actions";
 
 import moment from "moment";
 
@@ -17,15 +17,7 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import MessageIcon from "@material-ui/icons/Message";
 import IconHome from "./IconHome";
 
-
-
-const styles = theme => ({
-  root: theme.mixins.gutters({
-    paddingTop: 16,
-    paddingBottom: 16,
-    marginTop: theme.spacing.unit * 1
-  })
-});
+import styles from "./styles"
 
 class Post extends Component {
 
@@ -44,7 +36,7 @@ class Post extends Component {
 
     return (
       <div>
-        <Paper className={classes.root} elevation={4}>
+        <Paper className={classes.rootPost} elevation={4}>
           <Grid container>
             <Grid
               container
@@ -118,7 +110,7 @@ class Post extends Component {
               <Typography component="p">{body}</Typography>
 
               <Typography variant="caption" gutterBottom>
-                Published: {moment(date).format("d/M/YYYY - h:mm:ss a")}
+                Published: {moment(date).format('DD/MM/YYYY')}
               </Typography>
             </Grid>
 

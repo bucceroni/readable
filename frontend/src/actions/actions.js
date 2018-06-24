@@ -1,4 +1,4 @@
-import api from "./HomeApi";
+import api from "./api";
 import * as types from "./types";
 
 export function getCategories() {
@@ -54,3 +54,22 @@ export function decrementVoteScore(id) {
     });
   };
 }
+
+export function addNewPost(id, timestamp, title, body, author, category) {
+  return async dispatch => {
+    dispatch({
+      type: types.POST_ADD,
+      payload: await api.postAddNewPost(id, timestamp, title, body, author, category)
+    });
+  };
+}
+
+export function closeSnackbar() {
+  return dispatch => {
+    dispatch({
+      type: types.CLOSE_SNACKBAR
+    });
+  };
+}
+
+

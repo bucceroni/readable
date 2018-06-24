@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as actions from "./actions/HomeActions";
+import * as actions from "../../actions/actions";
 
 import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -16,25 +16,58 @@ import styles from "./styles";
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      selectedSort: "date",
+      listSort: [
+        {
+          name: "Date",
+          path: "date"
+        },
+        {
+          name: "Score",
+          path: "score"
+        }
+      ]
+    };
   }
 
   componentDidMount() {
     const { actions } = this.props;
-    //actions.getCategories();
     actions.getPosts();
   }
 
+  handleChangeSelectSort = value => {
+    this.setState({
+      selectedSort: value
+    });
+  };
+
   render() {
-    //const { posts, categories } = this.props;
     const { posts } = this.props;
+    const { selectedSort, listSort } = this.state;
+
+    if (selectedSort === "score") {
+      posts.sort(function(a, b) {
+        return b.voteScore - a.voteScore;
+      });
+    } else {
+      posts.sort(function(a, b) {
+        return b.timestamp - a.timestamp;
+      });
+    }
 
     return (
       <div>
         <Typography variant="display1" gutterBottom>
           Home
         </Typography>
-        <SelectSort />
+
+        <SelectSort
+          handleChangeItem={this.handleChangeSelectSort}
+          listItems={listSort}
+          selectedItem={selectedSort}
+          title={"Sort"}
+        />
 
         {posts.map(post => (
           <Post
@@ -56,7 +89,6 @@ class Home extends Component {
 Home.propTypes = {
   actions: PropTypes.object.isRequired,
   posts: PropTypes.array
-  //categories: PropTypes.array
 };
 
 const mapStateToProps = state => {
