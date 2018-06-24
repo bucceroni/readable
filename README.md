@@ -29,6 +29,7 @@ Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e gran
         - Redux Logger - `npm install redux-logger` 
         - Redux Thunk - `npm install redux-thunk`
         - Axios - `npm install axios`
+        - UUID - `npm install uuid`
 
     * Estrutura e organização
         ```
