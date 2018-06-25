@@ -30,6 +30,17 @@ class Home {
     }
   }
 
+  //`GET /:category/posts`
+  //Get all of the posts for a particular category.
+  static async getPostsCategory(category) {
+    const res = await axios.get(`${api}/${category}/posts`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
   //`POST /posts/:id`
   //Used for voting on a post.
   //**option** - [String]: Either `"upVote"` or `"downVote"`.
@@ -78,7 +89,6 @@ export default Home;
 
 // | Endpoints       | Usage          | Params         |
 // |-----------------|----------------|----------------|
-// | `GET /:category/posts` | Get all of the posts for a particular category. |  |
 // | `GET /posts/:id` | Get the details of a single post. | |
 // | `PUT /posts/:id` | Edit the details of an existing post. | **title** - [String] **body** - [String] |
 // | `DELETE /posts/:id` | Sets the deleted flag for a post to 'true'. Sets the parentDeleted flag for all child comments to 'true'. | |

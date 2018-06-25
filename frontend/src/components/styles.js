@@ -95,6 +95,17 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     minWidth: 120,
   },
+  svg: {
+    fontSize: 24,
+    width: "1em",
+    height: "1em",
+    display: "inline-block",
+    fill: "currentColor",
+    flexShrink: 0,
+    transition: theme.transitions.create("fill", {
+      duration: theme.transitions.duration.shorter
+    })
+  }
 });
 
 export default styles

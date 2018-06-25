@@ -12,6 +12,10 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
     background: "#FFFFFF"
+  },
+  snackbar: {
+    display: "block", 
+    textAlign: "center"
   }
 });
 

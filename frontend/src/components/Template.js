@@ -18,11 +18,11 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import IconAdd from "./IconAdd";
 import IconHome from "./IconHome";
+import IconUdacity from "./IconUdacity";
 import IconReact from "./IconReact";
 import IconRedux from "./IconRedux";
-import IconUdacity from "./IconUdacity";
+import IconAdd from "./IconAdd";
 
 import styles from "./styles"
 

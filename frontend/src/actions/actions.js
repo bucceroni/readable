@@ -19,12 +19,40 @@ export function getPosts() {
   };
 }
 
-export function incrementVoteScore(id) {
+export function getPostsCategoryReact(category) {
+  return async dispatch => {
+    dispatch({
+      type: types.GET_POSTS_CATEGORY_REACT,
+      payload: await api.getPostsCategory(category)
+    });
+  };
+}
+
+export function getPostsCategoryRedux(category) {
+  return async dispatch => {
+    dispatch({
+      type: types.GET_POSTS_CATEGORY_REDUX,
+      payload: await api.getPostsCategory(category)
+    });
+  };
+}
+
+export function getPostsCategoryUdacity(category) {
+  return async dispatch => {
+    dispatch({
+      type: types.GET_POSTS_CATEGORY_UDACITY,
+      payload: await api.getPostsCategory(category)
+    });
+  };
+}
+
+
+export function incrementVoteScore(id, array) {
   const vote = "upVote";
 
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const post = await api.postVoteScore(id, vote);
-    const posts = getState().home.posts.map(item => {
+    const posts = array.map(item => {
       if (item.id === post.id) {
         item.voteScore = post.voteScore;
       }
@@ -37,12 +65,12 @@ export function incrementVoteScore(id) {
   };
 }
 
-export function decrementVoteScore(id) {
+export function decrementVoteScore(id, array) {
   const vote = "downVote";
 
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const post = await api.postVoteScore(id, vote);
-    const posts = getState().home.posts.map(item => {
+    const posts = array.map(item => {
       if (item.id === post.id) {
         item.voteScore = post.voteScore;
       }

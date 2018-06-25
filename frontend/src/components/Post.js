@@ -15,24 +15,35 @@ import Button from "@material-ui/core/Button";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import MessageIcon from "@material-ui/icons/Message";
-import IconHome from "./IconHome";
 
-import styles from "./styles"
+import IconCategory from "./IconCategory";
+
+import styles from "./styles";
 
 class Post extends Component {
+  handleIncrementVoteScore(id, array) {
+    const { actions } = this.props;
+    actions.incrementVoteScore(id, array);
+  }
 
-  handleIncrementVoteScore(id) {
-    const {actions} = this.props
-    actions.incrementVoteScore(id);
-  };
-
-  handleDecrementVoteScore(id){
-    const {actions} = this.props
-    actions.decrementVoteScore(id);
-  };
+  handleDecrementVoteScore(id, array) {
+    const { actions } = this.props;
+    actions.decrementVoteScore(id, array);
+  }
 
   render() {
-    const { classes, id, title, author, body, commentCount, voteScore, date} = this.props;
+    const {
+      classes,
+      id,
+      title,
+      author,
+      body,
+      commentCount,
+      voteScore,
+      date,
+      category,
+      array
+    } = this.props;
 
     return (
       <div>
@@ -47,7 +58,7 @@ class Post extends Component {
               item
               xs={2}
             >
-              <IconHome />
+              <IconCategory>{category}</IconCategory>
             </Grid>
 
             <Grid
@@ -82,17 +93,15 @@ class Post extends Component {
               <Button
                 mini
                 color="primary"
-                className={classes.button}
-                onClick={() => this.handleIncrementVoteScore(id)}
+                onClick={() => this.handleIncrementVoteScore(id, array)}
               >
                 <ThumbUpIcon />
               </Button>
-              <div>{voteScore}</div>
+              <Typography>{voteScore}</Typography>
               <Button
                 mini
                 color="secondary"
-                className={classes.button}
-                onClick={() => this.handleDecrementVoteScore(id)}
+                onClick={() => this.handleDecrementVoteScore(id, array)}
               >
                 <ThumbDownIcon />
               </Button>
@@ -110,7 +119,7 @@ class Post extends Component {
               <Typography component="p">{body}</Typography>
 
               <Typography variant="caption" gutterBottom>
-                Published: {moment(date).format('DD/MM/YYYY')}
+                Published: {moment(date).format("DD/MM/YYYY")}
               </Typography>
             </Grid>
 
@@ -143,6 +152,7 @@ Post.propTypes = {
   voteScore: PropTypes.number.isRequired,
   body: PropTypes.string.isRequired,
   date: PropTypes.number.isRequired,
+  category: PropTypes.string.isRequired
 };
 
 const mapDispatchToProps = dispatch => {
@@ -156,6 +166,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles, { withTheme: true })(Post));
-
-
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles, { withTheme: true })(Post));

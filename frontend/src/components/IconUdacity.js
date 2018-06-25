@@ -3,25 +3,13 @@ import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = theme => ({
-  root: {
-    fontSize: 24,
-    width: "1em",
-    height: "1em",
-    display: "inline-block",
-    fill: "currentColor",
-    flexShrink: 0,
-    transition: theme.transitions.create("fill", {
-      duration: theme.transitions.duration.shorter
-    })
-  }
-});
+import styles from "./styles"
 
 class IconUdacity extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <div className={classes.svg}>
         <svg
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"

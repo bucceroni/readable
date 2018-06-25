@@ -11,8 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Post from "../../components/Post";
 import SelectSort from "../../components/SelectSort";
 
-import styles from "./styles";
-
+import styles from "./styles"
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +33,9 @@ class Home extends Component {
   componentDidMount() {
     const { actions } = this.props;
     actions.getPosts();
+    actions.getPostsCategoryReact("react");
+    actions.getPostsCategoryRedux("redux");
+    actions.getPostsCategoryUdacity("udacity");
   }
 
   handleChangeSelectSort = value => {
@@ -79,6 +81,8 @@ class Home extends Component {
             commentCount={post.commentCount}
             voteScore={post.voteScore}
             date={post.timestamp}
+            category={post.category}
+            array={posts}
           />
         ))}
       </div>

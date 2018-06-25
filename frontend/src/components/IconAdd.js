@@ -3,19 +3,7 @@ import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 
-const styles = theme => ({
-  svg: {
-    fontSize: 24,
-    width: "1em",
-    height: "1em",
-    display: "inline-block",
-    fill: "currentColor",
-    flexShrink: 0,
-    transition: theme.transitions.create("fill", {
-      duration: theme.transitions.duration.shorter
-    })
-  }
-});
+import styles from "./styles"
 
 class IconAdd extends Component {
   render() {

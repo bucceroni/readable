@@ -44,7 +44,7 @@ class NewPost extends Component {
       body: "",
       author: "",
       disabledTextField: true
-    })
+    });
     actions.closeSnackbar();
   };
 
@@ -208,11 +208,13 @@ class NewPost extends Component {
                 </Button>
               </Grid>
             </Grid>
+
             <Snackbar
               autoHideDuration={3000}
               open={openSnackbar}
               onClose={this.closeSnackbar}
-              message={<span id="message-id">Post published with success</span>}
+              ContentProps={{ className: classes.snackbar }}
+              message={<span>Published successfully</span>}
             />
           </Grid>
         </Paper>
@@ -224,7 +226,9 @@ class NewPost extends Component {
 NewPost.propTypes = {
   classes: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  listCategories: PropTypes.array
+  listCategories: PropTypes.array.isRequired,
+  timestamp: PropTypes.number.isRequired,
+  openSnackbar: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {

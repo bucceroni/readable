@@ -6,6 +6,7 @@ import UdacityPage from "./containers/UdacityPage/UdacityPage";
 import ReactPage from "./containers/ReactPage/ReactPage";
 import ReduxPage from "./containers/ReduxPage/ReduxPage";
 import NewPost from "./containers/NewPost/NewPost";
+import NotFound from "../src/containers/NotFound/NotFound";
 import Template from "../src/components/Template";
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
             <Route path="/react" component={ReactPage} />
             <Route path="/redux" component={ReduxPage} />
             <Route path="/newPost" component={NewPost} />
+            <Route component={NotFound} />
           </Switch>
         </Template>
       </BrowserRouter>
