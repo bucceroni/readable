@@ -12,23 +12,48 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import {Input} from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import MessageIcon from "@material-ui/icons/Message";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import IconCategory from "./IconCategory";
+import ModalDelete from "./ModalDelete";
 
 import styles from "./styles";
 
 class Post extends Component {
-  handleIncrementVoteScore(id, array) {
-    const { actions } = this.props;
-    actions.incrementVoteScore(id, array);
+  constructor(props) {
+    super(props);
+    this.state = {
+      openModal: false
+    };
   }
 
-  handleDecrementVoteScore(id, array) {
+  handleIncrementVoteScore(id) {
     const { actions } = this.props;
-    actions.decrementVoteScore(id, array);
+    actions.incrementVoteScore(id);
+  }
+
+  handleDecrementVoteScore(id) {
+    const { actions } = this.props;
+    actions.decrementVoteScore(id);
+  }
+
+  handleClickOpenModal = () => {
+    this.setState({ openModal: true });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ openModal: false });
+  };
+
+  handleDeletePost(id) {
+    const { actions } = this.props;
+    actions.deletePost(id);
+    actions.getPosts();
+    this.handleCloseModal();
   }
 
   render() {
@@ -41,9 +66,9 @@ class Post extends Component {
       commentCount,
       voteScore,
       date,
-      category,
-      array
+      category
     } = this.props;
+    const { openModal } = this.state;
 
     return (
       <div>
@@ -93,7 +118,7 @@ class Post extends Component {
               <Button
                 mini
                 color="primary"
-                onClick={() => this.handleIncrementVoteScore(id, array)}
+                onClick={() => this.handleIncrementVoteScore(id)}
               >
                 <ThumbUpIcon />
               </Button>
@@ -101,7 +126,7 @@ class Post extends Component {
               <Button
                 mini
                 color="secondary"
-                onClick={() => this.handleDecrementVoteScore(id, array)}
+                onClick={() => this.handleDecrementVoteScore(id)}
               >
                 <ThumbDownIcon />
               </Button>
@@ -116,7 +141,13 @@ class Post extends Component {
               item
               xs={9}
             >
-              <Typography component="p">{body}</Typography>
+              <Input
+                readOnly
+                disableUnderline={true}
+                multiline
+                fullWidth
+                defaultValue={body}
+              />
 
               <Typography variant="caption" gutterBottom>
                 Published: {moment(date).format("DD/MM/YYYY")}
@@ -132,11 +163,24 @@ class Post extends Component {
               item
               xs={1}
             >
+              <Button
+                mini
+                color="secondary"
+                onClick={this.handleClickOpenModal}
+              >
+                <DeleteIcon />
+              </Button>
               <MessageIcon color="primary" />
               <div>{commentCount}</div>
             </Grid>
           </Grid>
         </Paper>
+
+        <ModalDelete
+          open={openModal}
+          onClose={this.handleCloseModal}
+          onDelete={() => this.handleDeletePost(id)}
+        />
       </div>
     );
   }
@@ -155,6 +199,12 @@ Post.propTypes = {
   category: PropTypes.string.isRequired
 };
 
+const mapStateToProps = state => {
+  return {
+    ...state.home
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
@@ -167,6 +217,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withStyles(styles, { withTheme: true })(Post));

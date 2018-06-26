@@ -68,11 +68,11 @@ class NewPost extends Component {
     });
   };
 
-  addNewPost = () => {
+  postAddPost = () => {
     const { id, title, body, author, selectedCategories } = this.state;
     const { timestamp, actions } = this.props;
 
-    actions.addNewPost(id, timestamp, title, body, author, selectedCategories);
+    actions.postAddPost(id, timestamp, title, body, author, selectedCategories);
   };
 
   render() {
@@ -202,7 +202,7 @@ class NewPost extends Component {
                   variant="raised"
                   color="primary"
                   className={classes.button}
-                  onClick={this.addNewPost}
+                  onClick={this.postAddPost}
                 >
                   Add Post
                 </Button>
@@ -210,7 +210,7 @@ class NewPost extends Component {
             </Grid>
 
             <Snackbar
-              autoHideDuration={3000}
+              autoHideDuration={2000}
               open={openSnackbar}
               onClose={this.closeSnackbar}
               ContentProps={{ className: classes.snackbar }}

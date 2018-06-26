@@ -1,15 +1,7 @@
 import api from "./api";
 import * as types from "./types";
 
-export function getCategories() {
-  return async dispatch => {
-    dispatch({
-      type: types.GET_CATEGORIES,
-      payload: await api.getCategories()
-    });
-  };
-}
-
+//HOME
 export function getPosts() {
   return async dispatch => {
     dispatch({
@@ -46,13 +38,12 @@ export function getPostsCategoryUdacity(category) {
   };
 }
 
-
-export function incrementVoteScore(id, array) {
+//POST
+export function incrementVoteScore(id) {
   const vote = "upVote";
-
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     const post = await api.postVoteScore(id, vote);
-    const posts = array.map(item => {
+    const posts = getState().home.posts.map(item => {
       if (item.id === post.id) {
         item.voteScore = post.voteScore;
       }
@@ -65,12 +56,11 @@ export function incrementVoteScore(id, array) {
   };
 }
 
-export function decrementVoteScore(id, array) {
+export function decrementVoteScore(id) {
   const vote = "downVote";
-
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     const post = await api.postVoteScore(id, vote);
-    const posts = array.map(item => {
+    const posts = getState().home.posts.map(item => {
       if (item.id === post.id) {
         item.voteScore = post.voteScore;
       }
@@ -83,11 +73,37 @@ export function decrementVoteScore(id, array) {
   };
 }
 
-export function addNewPost(id, timestamp, title, body, author, category) {
+export function deletePost(id) {
+  return async (dispatch, getState) => {
+    const post = await api.deletePost(id)
+    const posts = getState().home.posts.map(item => {
+      if (item.id === post.id) {
+        item.deleted = post.deleted;
+      }
+      return item;
+    });
+    dispatch({
+      type: types.DELETE_POST,
+      payload: posts
+    });
+  };
+}
+
+//NEWPOST
+export function getCategories() {
+  return async dispatch => {
+    dispatch({
+      type: types.GET_CATEGORIES,
+      payload: await api.getCategories()
+    });
+  };
+}
+
+export function postAddPost(id, timestamp, title, body, author, category) {
   return async dispatch => {
     dispatch({
       type: types.POST_ADD,
-      payload: await api.postAddNewPost(id, timestamp, title, body, author, category)
+      payload: await api.postAddPost(id, timestamp, title, body, author, category)
     });
   };
 }
@@ -99,5 +115,4 @@ export function closeSnackbar() {
     });
   };
 }
-
 

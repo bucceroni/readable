@@ -16,7 +16,7 @@
     constructor(props) {
       super(props);
       this.state = {
-        selectedSort: "date",
+        selectedSort: "score",
         listSort: [
           {
             name: "Date",
@@ -32,7 +32,7 @@
   
     componentDidMount() {
       const { actions } = this.props;
-      actions.getPostsCategoryReact("react");
+      actions.getPostsCategory("react");
     }
   
     handleChangeSelectSort = value => {
@@ -42,15 +42,15 @@
     };
   
     render() {
-      const { postsReact } = this.props;
+      const { posts } = this.props;
       const { selectedSort, listSort } = this.state;
   
       if (selectedSort === "score") {
-        postsReact.sort(function(a, b) {
+        posts.sort(function(a, b) {
           return b.voteScore - a.voteScore;
         });
       } else {
-        postsReact.sort(function(a, b) {
+        posts.sort(function(a, b) {
           return b.timestamp - a.timestamp;
         });
       }
@@ -68,7 +68,7 @@
             title={"Sort"}
           />
   
-          {postsReact.map(post => (
+          {posts.map(post => (
             <Post
               key={post.id}
               id={post.id}
@@ -79,7 +79,6 @@
               voteScore={post.voteScore}
               date={post.timestamp}
               category={post.category}
-              array={postsReact}
             />
           ))}
         </div>

@@ -5,18 +5,19 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../actions/actions";
 
-import { Typography } from "@material-ui/core";
+import { Typography, Snackbar } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import Post from "../../components/Post";
 import SelectSort from "../../components/SelectSort";
+import ModalDelete from "../../components/ModalDelete";
 
-import styles from "./styles"
+import styles from "./styles";
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSort: "date",
+      selectedSort: "score",
       listSort: [
         {
           name: "Date",
@@ -29,13 +30,9 @@ class Home extends Component {
       ]
     };
   }
-
   componentDidMount() {
     const { actions } = this.props;
     actions.getPosts();
-    actions.getPostsCategoryReact("react");
-    actions.getPostsCategoryRedux("redux");
-    actions.getPostsCategoryUdacity("udacity");
   }
 
   handleChangeSelectSort = value => {
@@ -44,8 +41,13 @@ class Home extends Component {
     });
   };
 
+  closeSnackbarDeleted = () => {
+    const { actions } = this.props;
+    actions.closeSnackbar();
+  };
+
   render() {
-    const { posts } = this.props;
+    const { posts, classes, openSnackbarDeleted } = this.props;
     const { selectedSort, listSort } = this.state;
 
     if (selectedSort === "score") {
@@ -82,9 +84,17 @@ class Home extends Component {
             voteScore={post.voteScore}
             date={post.timestamp}
             category={post.category}
-            array={posts}
           />
         ))}
+
+        <ModalDelete open={false} />
+        <Snackbar
+          autoHideDuration={2000}
+          open={openSnackbarDeleted}
+          onClose={this.closeSnackbarDeleted}
+          ContentProps={{ className: classes.snackbar }}
+          message={<span>Deleted successfully</span>}
+        />
       </div>
     );
   }
@@ -92,7 +102,8 @@ class Home extends Component {
 
 Home.propTypes = {
   actions: PropTypes.object.isRequired,
-  posts: PropTypes.array
+  posts: PropTypes.array.isRequired,
+  openSnackbarDeleted: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {

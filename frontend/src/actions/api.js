@@ -65,7 +65,7 @@ class Home {
   //**body** - [String]
   //**author** - [String]
   //**category** - Any of the categories listed in `categories.js`. Feel free to extend this list as you desire.
-  static async postAddNewPost(id, timestamp, title, body, author, category) {
+  static async postAddPost(id, timestamp, title, body, author, category) {
     const res = await axios.post(
       `${api}/posts`,
       {
@@ -84,15 +84,65 @@ class Home {
       throw new Error(`HTTP status ${res.status}`);
     }
   }
+
+  //`PUT /posts/:id`
+  //Edit the details of an existing post.
+  //**title** - [String] 
+  //**body** - [String]
+  static async putEditPost(id, title, body) {
+    const res = await axios.put(`${api}/posts/${id}`,
+      {
+        title,
+        body,
+      },
+      { headers }
+    );
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
+  //`DELETE /posts/:id`
+  //Sets the deleted flag for a post to 'true'. 
+  //Sets the parentDeleted flag for all child comments to 'true'.
+  static async deletePost(id) {
+    const res = await axios.delete(`${api}/posts/${id}`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
+  //`GET /posts/:id`
+  //Get the details of a single post.
+  static async getDetailsPost(id) {
+    const res = await axios.get(`${api}/posts/${id}`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
+  //`GET /posts/:id/comments`
+  //Get all the comments for a single post.
+  static async getCommentsPost(id) {
+    const res = await axios.get(`${api}/posts/${id}`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
 }
 export default Home;
 
 // | Endpoints       | Usage          | Params         |
 // |-----------------|----------------|----------------|
-// | `GET /posts/:id` | Get the details of a single post. | |
-// | `PUT /posts/:id` | Edit the details of an existing post. | **title** - [String] **body** - [String] |
-// | `DELETE /posts/:id` | Sets the deleted flag for a post to 'true'. Sets the parentDeleted flag for all child comments to 'true'. | |
-// | `GET /posts/:id/comments` | Get all the comments for a single post. | |
 // | `POST /comments` | Add a comment to a post. | **id** - Any unique ID. As with posts, UUID is probably the best here. **timestamp** - [Timestamp] Get this however you want. **body** - [String] **author** - [String] **parentId** - Should match a post id in the database. |
 // | `GET /comments/:id` | Get the details for a single comment. | |
 // | `POST /comments/:id` | Used for voting on a comment. | **option** - [String]: Either `"upVote"` or `"downVote"`.  |
