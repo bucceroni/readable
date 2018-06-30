@@ -1,0 +1,7 @@
+organization=bucceroni-github
+projectKey=readable-udacity
+serverUrl=https://sonarcloud.io
+serverVersion=7.3.0.13459
+dashboardUrl=https://sonarcloud.io/dashboard?id=readable-udacity
+ceTaskId=AWQ-PqSGXjY49gwGBHPS
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AWQ-PqSGXjY49gwGBHPS

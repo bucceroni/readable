@@ -7,7 +7,7 @@ const headers = {
   Authorization: "whatever-you-want"
 };
 
-class Home {
+class Api {
   //`GET /categories`
   //Get all of the categories available for the app. List is found in `categories.js`. Feel free to extend this list as you desire.
   static async getCategories() {
@@ -32,14 +32,14 @@ class Home {
 
   //`GET /:category/posts`
   //Get all of the posts for a particular category.
-  static async getPostsCategory(category) {
-    const res = await axios.get(`${api}/${category}/posts`, { headers });
-    if (res.status >= 200 && res.status <= 207) {
-      return res.data;
-    } else {
-      throw new Error(`HTTP status ${res.status}`);
-    }
-  }
+  // static async getPostsCategory(category) {
+  //   const res = await axios.get(`${api}/${category}/posts`, { headers });
+  //   if (res.status >= 200 && res.status <= 207) {
+  //     return res.data;
+  //   } else {
+  //     throw new Error(`HTTP status ${res.status}`);
+  //   }
+  // }
 
   //`POST /posts/:id`
   //Used for voting on a post.
@@ -85,25 +85,6 @@ class Home {
     }
   }
 
-  //`PUT /posts/:id`
-  //Edit the details of an existing post.
-  //**title** - [String] 
-  //**body** - [String]
-  static async putEditPost(id, title, body) {
-    const res = await axios.put(`${api}/posts/${id}`,
-      {
-        title,
-        body,
-      },
-      { headers }
-    );
-    if (res.status >= 200 && res.status <= 207) {
-      return res.data;
-    } else {
-      throw new Error(`HTTP status ${res.status}`);
-    }
-  }
-
   //`DELETE /posts/:id`
   //Sets the deleted flag for a post to 'true'. 
   //Sets the parentDeleted flag for all child comments to 'true'.
@@ -130,7 +111,60 @@ class Home {
   //`GET /posts/:id/comments`
   //Get all the comments for a single post.
   static async getCommentsPost(id) {
-    const res = await axios.get(`${api}/posts/${id}`, { headers });
+    const res = await axios.get(`${api}/posts/${id}/comments`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
+  //`POST /comments/:id`
+  //Used for voting on a comment.
+  //**option** - [String]: Either `"upVote"` or `"downVote"`.
+  static async postVoteScoreComments(id, vote) {
+    const res = await axios.post(
+      `${api}/comments/${id}`,
+      { option: vote },
+      { headers }
+    );
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
+  //`DELETE /comments/:id`
+  //Sets a comment's deleted flag to `true`.
+  static async deleteComments(id) {
+    const res = await axios.delete(`${api}/comments/${id}`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
+  //`POST /comments`
+  //Add a comment to a post.
+  //**id** - Any unique ID. As with posts, UUID is probably the best here. 
+  //**timestamp** - [Timestamp] Get this however you want. 
+  //**body** - [String] 
+  //**author** - [String] 
+  //**parentId** - Should match a post id in the database.
+  static async postAddComments(id, timestamp, body, author, parentId) {
+    const res = await axios.post(
+      `${api}/comments`,
+      {
+        id,
+        timestamp,
+        body,
+        author,
+        parentId
+      },
+      { headers }
+    );
     if (res.status >= 200 && res.status <= 207) {
       return res.data;
     } else {
@@ -139,12 +173,29 @@ class Home {
   }
 
 }
-export default Home;
+export default Api;
 
 // | Endpoints       | Usage          | Params         |
 // |-----------------|----------------|----------------|
-// | `POST /comments` | Add a comment to a post. | **id** - Any unique ID. As with posts, UUID is probably the best here. **timestamp** - [Timestamp] Get this however you want. **body** - [String] **author** - [String] **parentId** - Should match a post id in the database. |
 // | `GET /comments/:id` | Get the details for a single comment. | |
-// | `POST /comments/:id` | Used for voting on a comment. | **option** - [String]: Either `"upVote"` or `"downVote"`.  |
 // | `PUT /comments/:id` | Edit the details of an existing comment. | **timestamp** - timestamp. Get this however you want. **body** - [String] |
-// | `DELETE /comments/:id` | Sets a comment's deleted flag to `true`. | &nbsp; |
+
+  //`PUT /posts/:id`
+  //Edit the details of an existing post.
+  //**title** - [String] 
+  //**body** - [String]
+  // static async putEditPost(id, title, body) {
+  //   const res = await axios.put(`${api}/posts/${id}`,
+  //     {
+  //       title,
+  //       body,
+  //     },
+  //     { headers }
+  //   );
+  //   if (res.status >= 200 && res.status <= 207) {
+  //     return res.data;
+  //   } else {
+  //     throw new Error(`HTTP status ${res.status}`);
+  //   }
+  // }
+

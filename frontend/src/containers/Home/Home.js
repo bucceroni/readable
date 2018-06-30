@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../actions/actions";
 
-import { Typography, Snackbar } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { Typography, Snackbar } from "@material-ui/core";
+import Grid from "@material-ui/core/Grid";
 
 import Post from "../../components/Post";
 import SelectSort from "../../components/SelectSort";
-import ModalDelete from "../../components/ModalDelete";
 
 import styles from "./styles";
 class Home extends Component {
@@ -62,32 +62,59 @@ class Home extends Component {
 
     return (
       <div>
-        <Typography variant="display1" gutterBottom>
-          Home
-        </Typography>
+        <Grid container>
+          <Grid
+            container
+            wrap="nowrap"
+            alignItems="flex-start"
+            direction="column"
+            justify="flex-end"
+            item
+            xs={9}
+          >
+            <Typography variant="display1" gutterBottom>
+              Home
+            </Typography>
+          </Grid>
 
-        <SelectSort
-          handleChangeItem={this.handleChangeSelectSort}
-          listItems={listSort}
-          selectedItem={selectedSort}
-          title={"Sort"}
-        />
+          <Grid
+            container
+            wrap="nowrap"
+            alignItems="flex-end"
+            direction="column"
+            justify="flex-end"
+            item
+            xs={3}
+          >
+            <SelectSort
+              handleChangeItem={this.handleChangeSelectSort}
+              listItems={listSort}
+              selectedItem={selectedSort}
+              title={"Sort"}
+            />
+          </Grid>
+        </Grid>
 
-        {posts.map(post => (
-          <Post
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            author={post.author}
-            body={post.body}
-            commentCount={post.commentCount}
-            voteScore={post.voteScore}
-            date={post.timestamp}
-            category={post.category}
-          />
-        ))}
+        {posts.map(post => {
+          if (post.deleted === false) {
+            return (
+              <Post
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                author={post.author}
+                body={post.body}
+                commentCount={post.commentCount}
+                voteScore={post.voteScore}
+                date={post.timestamp}
+                category={post.category}
+              />
+            );
+          }else{
+            return null
+          }
+        })}
 
-        <ModalDelete open={false} />
         <Snackbar
           autoHideDuration={2000}
           open={openSnackbarDeleted}

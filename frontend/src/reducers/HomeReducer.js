@@ -3,9 +3,6 @@ import * as types from "../actions/types";
 const initialState = {
     posts: [],
     openSnackbarDeleted: false
-    // postsReact:[],
-    // postsRedux:[],
-    // postsUdacity:[],
 };
 
 export default function reduce(state = initialState, action) {
@@ -30,6 +27,7 @@ export default function reduce(state = initialState, action) {
       case `${types.DELETE_POST}`:
       return {
         ...state,
+        ...payload,
         openSnackbarDeleted: true
       };
     case `${types.CLOSE_SNACKBAR}`:

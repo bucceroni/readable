@@ -19,10 +19,10 @@ class ModalDelete extends React.Component {
         onClose={onClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">Delete this post</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">Delete</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Once you delete a post, there is no going back. Please be certain.
+            Once you delete, there is no going back. Please be certain.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

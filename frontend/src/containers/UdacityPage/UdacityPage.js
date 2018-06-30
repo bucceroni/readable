@@ -5,18 +5,19 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../actions/actions";
 
-import { Typography } from "@material-ui/core";
+import { Typography, Snackbar } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 
 import Post from "../../components/Post";
 import SelectSort from "../../components/SelectSort";
 
-import styles from "./styles"
+import styles from "./styles";
 class UdacityPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSort: "date",
+      selectedSort: "score",
       listSort: [
         {
           name: "Date",
@@ -32,7 +33,7 @@ class UdacityPage extends Component {
 
   componentDidMount() {
     const { actions } = this.props;
-    actions.getPostsCategoryUdacity("udacity");
+    actions.getPosts();
   }
 
   handleChangeSelectSort = value => {
@@ -41,47 +42,83 @@ class UdacityPage extends Component {
     });
   };
 
+  closeSnackbarDeleted = () => {
+    const { actions } = this.props;
+    actions.closeSnackbar();
+  };
+
   render() {
-    const { postsUdacity } = this.props;
+    const { posts, classes, openSnackbarDeleted } = this.props;
     const { selectedSort, listSort } = this.state;
 
     if (selectedSort === "score") {
-      postsUdacity.sort(function(a, b) {
+      posts.sort(function(a, b) {
         return b.voteScore - a.voteScore;
       });
     } else {
-      postsUdacity.sort(function(a, b) {
+      posts.sort(function(a, b) {
         return b.timestamp - a.timestamp;
       });
     }
-
     return (
       <div>
-        <Typography variant="display1" gutterBottom>
-          Redux Page
-        </Typography>
+        <Grid container>
+          <Grid
+            container
+            wrap="nowrap"
+            alignItems="flex-start"
+            direction="column"
+            justify="flex-end"
+            item
+            xs={9}
+          >
+            <Typography variant="display1" gutterBottom>
+              Udacity Page
+            </Typography>
+          </Grid>
 
-        <SelectSort
-          handleChangeItem={this.handleChangeSelectSort}
-          listItems={listSort}
-          selectedItem={selectedSort}
-          title={"Sort"}
+          <Grid
+            container
+            wrap="nowrap"
+            alignItems="flex-end"
+            direction="column"
+            justify="flex-end"
+            item
+            xs={3}
+          >
+            <SelectSort
+              handleChangeItem={this.handleChangeSelectSort}
+              listItems={listSort}
+              selectedItem={selectedSort}
+              title={"Sort"}
+            />
+          </Grid>
+        </Grid>
+
+        {posts.map(
+          post =>
+            post.category === "udacity" ? (
+              <Post
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                author={post.author}
+                body={post.body}
+                commentCount={post.commentCount}
+                voteScore={post.voteScore}
+                date={post.timestamp}
+                category={post.category}
+              />
+            ) : null
+        )}
+
+        <Snackbar
+          autoHideDuration={2000}
+          open={openSnackbarDeleted}
+          onClose={this.closeSnackbarDeleted}
+          ContentProps={{ className: classes.snackbar }}
+          message={<span>Deleted successfully</span>}
         />
-
-        {postsUdacity.map(post => (
-          <Post
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            author={post.author}
-            body={post.body}
-            commentCount={post.commentCount}
-            voteScore={post.voteScore}
-            date={post.timestamp}
-            category={post.category}
-            array={postsUdacity}
-          />
-        ))}
       </div>
     );
   }
@@ -89,7 +126,8 @@ class UdacityPage extends Component {
 
 UdacityPage.propTypes = {
   actions: PropTypes.object.isRequired,
-  postsUdacity: PropTypes.array
+  posts: PropTypes.array.isRequired,
+  openSnackbarDeleted: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {

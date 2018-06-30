@@ -87,15 +87,38 @@ class NewPost extends Component {
 
     return (
       <div>
-        <Typography variant="display1" gutterBottom>
-          New Post
-        </Typography>
-        <SelectSort
-          handleChangeItem={this.handleChangeSelectCategories}
-          listItems={listCategories}
-          selectedItem={selectedCategories}
-          title={"Categories"}
-        />
+        <Grid container>
+          <Grid
+            container
+            wrap="nowrap"
+            alignItems="flex-start"
+            direction="column"
+            justify="flex-end"
+            item
+            xs={9}
+          >
+            <Typography variant="display1" gutterBottom>
+              Add Post
+            </Typography>
+          </Grid>
+
+          <Grid
+            container
+            wrap="nowrap"
+            alignItems="flex-end"
+            direction="column"
+            justify="flex-end"
+            item
+            xs={3}
+          >
+            <SelectSort
+              handleChangeItem={this.handleChangeSelectCategories}
+              listItems={listCategories}
+              selectedItem={selectedCategories}
+              title={"Categories"}
+            />
+          </Grid>
+        </Grid>
 
         <Paper className={classes.root} elevation={4}>
           <Grid container>
@@ -214,7 +237,7 @@ class NewPost extends Component {
               open={openSnackbar}
               onClose={this.closeSnackbar}
               ContentProps={{ className: classes.snackbar }}
-              message={<span>Published successfully</span>}
+              message={<span>Post published successfully</span>}
             />
           </Grid>
         </Paper>

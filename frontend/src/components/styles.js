@@ -15,6 +15,11 @@ const styles = theme => ({
     paddingBottom: 16,
     marginTop: theme.spacing.unit * 1
   }),
+  rootComments: theme.mixins.gutters({
+    paddingTop: 16,
+    paddingBottom: 16,
+    marginTop: theme.spacing.unit * 1
+  }),
   appBar: {
     backgroundColor: "#02b3e4",
     zIndex: theme.zIndex.drawer + 1,

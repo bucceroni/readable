@@ -128,7 +128,7 @@ class Template extends React.Component {
               <ListItemIcon>
                 <IconAdd />
               </ListItemIcon>
-              <ListItemText className={classes.iconText} primary="New Post" />
+              <ListItemText className={classes.iconText} primary="Add Post" />
             </ListItem>
           </List>
         </Drawer>

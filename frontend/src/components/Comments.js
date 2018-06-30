@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -16,31 +15,18 @@ import Button from "@material-ui/core/Button";
 import { Input } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import MessageIcon from "@material-ui/icons/Message";
 import DeleteIcon from "@material-ui/icons/Delete";
-import PageViewIcon from "@material-ui/icons/Pageview";
 
-import IconCategory from "./IconCategory";
 import ModalDelete from "./ModalDelete";
 
 import styles from "./styles";
 
-class Post extends Component {
+class Comments extends Component {
   constructor(props) {
     super(props);
     this.state = {
       openModal: false
     };
-  }
-
-  handleIncrementVoteScore(id) {
-    const { actions } = this.props;
-    actions.incrementVoteScore(id);
-  }
-
-  handleDecrementVoteScore(id) {
-    const { actions } = this.props;
-    actions.decrementVoteScore(id);
   }
 
   handleClickOpenModal = () => {
@@ -51,62 +37,29 @@ class Post extends Component {
     this.setState({ openModal: false });
   };
 
-  handleDeletePost(id) {
+  handleIncrementVoteScoreComments(id) {
     const { actions } = this.props;
-    actions.deletePost(id);
-    actions.getPosts();
+    actions.incrementVoteScoreComments(id);
+  }
+
+  handleDecrementVoteScoreComments(id) {
+    const { actions } = this.props;
+    actions.decrementVoteScoreComments(id);
+  }
+
+  handleDeleteComments(id) {
+    const { actions } = this.props;
+    actions.deleteComments(id);
     this.handleCloseModal();
   }
 
   render() {
-    const {
-      classes,
-      id,
-      title,
-      author,
-      body,
-      commentCount,
-      voteScore,
-      date,
-      category
-    } = this.props;
+    const { classes, id, author, body, voteScore, date } = this.props;
     const { openModal } = this.state;
 
     return (
       <div>
-        <Paper className={classes.rootPost} elevation={4}>
-          <Grid container>
-            <Grid
-              container
-              wrap="nowrap"
-              alignItems="center"
-              direction="column"
-              justify="center"
-              item
-              xs={2}
-            >
-              <IconCategory>{category}</IconCategory>
-            </Grid>
-
-            <Grid
-              container
-              wrap="nowrap"
-              alignItems="flex-start"
-              direction="column"
-              justify="flex-start"
-              item
-              xs={9}
-            >
-              <Typography variant="title" gutterBottom>
-                {title}
-              </Typography>
-
-              <Typography variant="caption" gutterBottom>
-                Author: {author}
-              </Typography>
-            </Grid>
-          </Grid>
-
+        <Paper className={classes.rootComments} elevation={2}>
           <Grid container>
             <Grid
               container
@@ -120,7 +73,7 @@ class Post extends Component {
               <Button
                 mini
                 color="primary"
-                onClick={() => this.handleIncrementVoteScore(id)}
+                onClick={() => this.handleIncrementVoteScoreComments(id)}
               >
                 <ThumbUpIcon />
               </Button>
@@ -128,7 +81,7 @@ class Post extends Component {
               <Button
                 mini
                 color="secondary"
-                onClick={() => this.handleDecrementVoteScore(id)}
+                onClick={() => this.handleDecrementVoteScoreComments(id)}
               >
                 <ThumbDownIcon />
               </Button>
@@ -150,9 +103,9 @@ class Post extends Component {
                 fullWidth
                 defaultValue={body}
               />
-
               <Typography variant="caption" gutterBottom>
-                Published: {moment(date).format("DD/MM/YYYY")}
+                Published: {moment(date).format("DD/MM/YYYY")}<br />
+                Author: {author}
               </Typography>
             </Grid>
 
@@ -166,22 +119,12 @@ class Post extends Component {
               xs={1}
             >
               <Button
-                color="primary"
-                component={Link}
-                to={`/${category}/${id}`}
-              >
-                <PageViewIcon />
-              </Button>
-
-              <Button
                 mini
                 color="secondary"
                 onClick={this.handleClickOpenModal}
               >
                 <DeleteIcon />
               </Button>
-              <MessageIcon color="primary" />
-              <div>{commentCount}</div>
             </Grid>
           </Grid>
         </Paper>
@@ -189,29 +132,26 @@ class Post extends Component {
         <ModalDelete
           open={openModal}
           onClose={this.handleCloseModal}
-          onDelete={() => this.handleDeletePost(id)}
+          onDelete={() => this.handleDeleteComments(id)}
         />
       </div>
     );
   }
 }
 
-Post.propTypes = {
+Comments.propTypes = {
   actions: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
-  commentCount: PropTypes.number.isRequired,
   voteScore: PropTypes.number.isRequired,
   body: PropTypes.string.isRequired,
-  date: PropTypes.number.isRequired,
-  category: PropTypes.string.isRequired
+  date: PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => {
   return {
-    ...state.home
+    ...state.detailsPost
   };
 };
 
@@ -229,4 +169,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(Post));
+)(withStyles(styles, { withTheme: true })(Comments));
