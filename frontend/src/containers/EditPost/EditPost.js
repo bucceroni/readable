@@ -6,54 +6,47 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../actions/actions";
 
 import moment from "moment";
-import { default as UUID } from "uuid";
 
-import { Typography, Paper, Button, Snackbar } from "@material-ui/core";
+import {
+  Typography,
+  Paper,
+  Button,
+  Snackbar,
+  FormControl,
+  InputLabel,
+  NativeSelect,
+  Input
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
-import SelectSort from "../../components/SelectSort";
-
 import styles from "./styles";
 
-class NewPost extends Component {
+class EditPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedCategories: "",
-      id: "",
       title: "",
-      body: "",
-      author: "",
-      disabledTextField: true
+      body: ""
     };
   }
 
   componentDidMount() {
-    const { actions } = this.props;
-    actions.getCategories();
+    const {
+      actions,
+      match: { params }
+    } = this.props;
+    actions.getDetailsPost(params.id);
   }
 
-  closeSnackbar = () => {
+  closeSnackbarEditPost = () => {
     const { actions } = this.props;
     this.setState({
-      selectedCategories: "",
-      id: "",
       title: "",
-      body: "",
-      author: "",
-      disabledTextField: true
+      body: ""
     });
-    actions.closeSnackbar();
-  };
-
-  handleChangeSelectCategories = value => {
-    this.setState({
-      selectedCategories: value,
-      disabledTextField: false
-    });
-    this.handleChangeId();
+    actions.closeSnackbarEditPost();
   };
 
   handleChangeTextField = name => event => {
@@ -62,28 +55,18 @@ class NewPost extends Component {
     });
   };
 
-  handleChangeId = () => {
-    this.setState({
-      id: UUID.v1()
-    });
-  };
-
-  postAddPost = () => {
-    const { id, title, body, author, selectedCategories } = this.state;
-    const { timestamp, actions } = this.props;
-
-    actions.postAddPost(id, timestamp, title, body, author, selectedCategories);
+  putEditPost = () => {
+    const { actions, details } = this.props;
+    const { title, body } = this.state;
+    actions.putEditPost(details.id, title, body);
+    this.closeSnackbarEditPost();
+    
+   
   };
 
   render() {
-    const { classes, timestamp, listCategories, openSnackbar } = this.props;
-    const {
-      selectedCategories,
-      title,
-      body,
-      author,
-      disabledTextField
-    } = this.state;
+    const { classes, details, openSnackbarEditPost } = this.props;
+    const { title, body } = this.state;
 
     return (
       <div>
@@ -98,7 +81,7 @@ class NewPost extends Component {
             xs={9}
           >
             <Typography variant="display1" gutterBottom>
-              Add Post
+              Edit Post
             </Typography>
           </Grid>
 
@@ -111,13 +94,18 @@ class NewPost extends Component {
             item
             xs={3}
           >
-            <SelectSort
-            disabled
-              handleChangeItem={this.handleChangeSelectCategories}
-              listItems={listCategories}
-              selectedItem={selectedCategories}
-              title={"Categories"}
-            />
+            <FormControl className={classes.formControl} disabled>
+              <InputLabel htmlFor="name-native-disabled">Categories</InputLabel>
+              <NativeSelect
+                value={details.category}
+                input={<Input name="name" id="name-native-disabled" />}
+              >
+                <option value="" />
+                <optgroup label="categories">
+                  <option value={details.category}>{details.category}</option>
+                </optgroup>
+              </NativeSelect>
+            </FormControl>
           </Grid>
         </Grid>
 
@@ -141,11 +129,9 @@ class NewPost extends Component {
                 xs={10}
               >
                 <TextField
-                  disabled={disabledTextField}
-                  required
                   label="Title"
-                  placeholder="Add title"
                   id="title"
+                  placeholder={details.title}
                   value={title}
                   onChange={this.handleChangeTextField("title")}
                   className={classes.textField}
@@ -163,9 +149,8 @@ class NewPost extends Component {
               >
                 <TextField
                   disabled
-                  id="date"
                   label="Date"
-                  defaultValue={moment(timestamp).format("DD/MM/YYYY")}
+                  defaultValue={moment(details.timestamp).format("DD/MM/YYYY")}
                   className={classes.textField}
                   margin="normal"
                 />
@@ -182,13 +167,11 @@ class NewPost extends Component {
               xs={12}
             >
               <TextField
-                disabled={disabledTextField}
-                required
                 id="body"
                 label="Body"
                 multiline
                 rows="12"
-                placeholder="Add text"
+                placeholder={details.body}
                 value={body}
                 onChange={this.handleChangeTextField("body")}
                 className={classes.textField}
@@ -208,13 +191,9 @@ class NewPost extends Component {
             >
               <Grid container wrap="nowrap" justify="center" item xs={10}>
                 <TextField
-                  disabled={disabledTextField}
-                  required
-                  id="author"
+                  disabled
                   label="Author"
-                  value={author}
-                  onChange={this.handleChangeTextField("author")}
-                  placeholder="Add author"
+                  defaultValue={details.author}
                   className={classes.textField}
                   fullWidth
                   margin="normal"
@@ -222,23 +201,23 @@ class NewPost extends Component {
               </Grid>
               <Grid container wrap="nowrap" justify="center" item xs={2}>
                 <Button
-                  disabled={!title || !body || !author}
+                 
                   variant="raised"
                   color="primary"
                   className={classes.button}
-                  onClick={this.postAddPost}
+                  onClick={this.putEditPost}
                 >
-                  Add Post
+                  Edit Post
                 </Button>
               </Grid>
             </Grid>
 
             <Snackbar
               autoHideDuration={2000}
-              open={openSnackbar}
-              onClose={this.closeSnackbar}
+              open={openSnackbarEditPost}
+              onClose={this.closeSnackbarEditPost}
               ContentProps={{ className: classes.snackbar }}
-              message={<span>Post published successfully</span>}
+              message={<span>Post edit successfully</span>}
             />
           </Grid>
         </Paper>
@@ -247,17 +226,15 @@ class NewPost extends Component {
   }
 }
 
-NewPost.propTypes = {
+EditPost.propTypes = {
   classes: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  listCategories: PropTypes.array.isRequired,
-  timestamp: PropTypes.number.isRequired,
-  openSnackbar: PropTypes.bool.isRequired
+  details: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
   return {
-    ...state.newPost
+    ...state.detailsPost
   };
 };
 
@@ -275,4 +252,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(NewPost));
+)(withStyles(styles, { withTheme: true })(EditPost));

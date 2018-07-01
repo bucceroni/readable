@@ -10,6 +10,7 @@ import UdacityPage from "./containers/UdacityPage/UdacityPage";
 import ReactPage from "./containers/ReactPage/ReactPage";
 import ReduxPage from "./containers/ReduxPage/ReduxPage";
 import NewPost from "./containers/NewPost/NewPost";
+import EditPost from "./containers/EditPost/EditPost";
 import DetailsPost from "./containers/DetailsPost/DetailsPost";
 import NotFound from "../src/containers/NotFound/NotFound";
 import Template from "../src/components/Template";
@@ -21,8 +22,9 @@ class App extends Component {
       <Router>
         <Template>
           <Switch>
-            <Route path="/" exact={true} component={Home} />
+            <Route exact path='/' render={({history})  => (<Home history={history} />)}/>
             <Route path="/newPost" component={NewPost} />
+            <Route path="/editPost/:id" component={EditPost} />
             <Route path="/:category/:id" component={DetailsPost} />
             <Route path="/react" component={ReactPage} />
             <Route path="/udacity" component={UdacityPage} />

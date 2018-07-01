@@ -94,6 +94,32 @@ export function closeSnackbar() {
   };
 }
 
+//EDITPOST
+export function putEditPost(id, title, body) {
+  return async (dispatch, getState) => {
+    const post = await api.putEditPost(id, title, body);
+    const posts = getState().home.posts.map( item => {
+       if(item.id === post.id){
+         item.body = post.body;
+         item.title = post.title
+       }
+       return item
+     });
+    dispatch({
+      type: types.PUT_EDIT_POST,
+      payload: {posts}
+    });
+  };
+}
+
+export function closeSnackbarEditPost() {
+  return dispatch => {
+    dispatch({
+      type: types.CLOSE_SNACKBAR_EDIT_POST
+    });
+  };
+}
+
 //DETAILSPOST
 export function getDetailsPost(id) {
   return async dispatch => {
@@ -194,13 +220,30 @@ export function closeSnackbarDeletedComments() {
   };
 }
 
-// export function closeSnackbarDeletedPost() {
-//   return dispatch => {
-//     dispatch({
-//       type: types.CLOSE_SNACKBAR_DELETE_POST
-//     });
-//   };
-// }
+export function putEditComment(id, timestamp, body) {
+  return async (dispatch, getState) => {
+    const comment = await api.putEditComment(id, timestamp, body);
+    const commentsPost = getState().detailsPost.commentsPost.map( item => {
+       if(item.id === comment.id){
+         item.body = comment.body;
+         item.timestamp = comment.timestamp
+       }
+       return item
+     });
+    dispatch({
+      type: types.PUT_EDIT_COMMENT,
+      payload: {commentsPost}
+    });
+  };
+}
+
+export function closeSnackbarEditComment() {
+  return dispatch => {
+    dispatch({
+      type: types.CLOSE_SNACKBAR_EDIT_COMMENT
+    });
+  };
+}
 
 // export function cleanDetailsPost() {
 //   return dispatch => {

@@ -86,7 +86,7 @@ class Api {
   }
 
   //`DELETE /posts/:id`
-  //Sets the deleted flag for a post to 'true'. 
+  //Sets the deleted flag for a post to 'true'.
   //Sets the parentDeleted flag for all child comments to 'true'.
   static async deletePost(id) {
     const res = await axios.delete(`${api}/posts/${id}`, { headers });
@@ -148,10 +148,10 @@ class Api {
 
   //`POST /comments`
   //Add a comment to a post.
-  //**id** - Any unique ID. As with posts, UUID is probably the best here. 
-  //**timestamp** - [Timestamp] Get this however you want. 
-  //**body** - [String] 
-  //**author** - [String] 
+  //**id** - Any unique ID. As with posts, UUID is probably the best here.
+  //**timestamp** - [Timestamp] Get this however you want.
+  //**body** - [String]
+  //**author** - [String]
   //**parentId** - Should match a post id in the database.
   static async postAddComments(id, timestamp, body, author, parentId) {
     const res = await axios.post(
@@ -172,30 +172,55 @@ class Api {
     }
   }
 
-}
-export default Api;
-
-// | Endpoints       | Usage          | Params         |
-// |-----------------|----------------|----------------|
-// | `GET /comments/:id` | Get the details for a single comment. | |
-// | `PUT /comments/:id` | Edit the details of an existing comment. | **timestamp** - timestamp. Get this however you want. **body** - [String] |
+  //`PUT /comments/:id`
+  //Edit the details of an existing comment.
+  //**timestamp** - timestamp. Get this however you want.
+  //**body** - [String]
+  static async putEditComment(id, timestamp, body) {
+    const res = await axios.put(
+      `${api}/comments/${id}`,
+      {
+        timestamp,
+        body
+      },
+      { headers }
+    );
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
 
   //`PUT /posts/:id`
   //Edit the details of an existing post.
-  //**title** - [String] 
+  //**title** - [String]
   //**body** - [String]
-  // static async putEditPost(id, title, body) {
-  //   const res = await axios.put(`${api}/posts/${id}`,
-  //     {
-  //       title,
-  //       body,
-  //     },
-  //     { headers }
-  //   );
-  //   if (res.status >= 200 && res.status <= 207) {
-  //     return res.data;
-  //   } else {
-  //     throw new Error(`HTTP status ${res.status}`);
-  //   }
-  // }
+  static async putEditPost(id, title, body) {
+    const res = await axios.put(
+      `${api}/posts/${id}`,
+      {
+        title,
+        body
+      },
+      { headers }
+    );
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+}
+export default Api;
 
+// //`GET /comments/:id`
+// //Get the details for a single comment.
+// static async getDetailsComment(id) {
+//   const res = await axios.get(`${api}/comments/${id}`, { headers });
+//   if (res.status >= 200 && res.status <= 207) {
+//     return res.data;
+//   } else {
+//     throw new Error(`HTTP status ${res.status}`);
+//   }
+// }

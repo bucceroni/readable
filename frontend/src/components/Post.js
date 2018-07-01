@@ -17,8 +17,9 @@ import { Input } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import MessageIcon from "@material-ui/icons/Message";
-import DeleteIcon from "@material-ui/icons/Delete";
 import PageViewIcon from "@material-ui/icons/Pageview";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 import IconCategory from "./IconCategory";
 import ModalDelete from "./ModalDelete";
@@ -174,12 +175,22 @@ class Post extends Component {
               </Button>
 
               <Button
+                color="primary"
+                component={Link}
+                to={`/editPost/${id}`}
+              >
+                 <EditIcon />
+              </Button>
+           
+
+              <Button
                 mini
                 color="secondary"
                 onClick={this.handleClickOpenModal}
               >
                 <DeleteIcon />
               </Button>
+
               <MessageIcon color="primary" />
               <div>{commentCount}</div>
             </Grid>

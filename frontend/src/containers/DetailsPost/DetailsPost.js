@@ -53,6 +53,11 @@ class DetailsPost extends Component {
     const { actions } = this.props;
     actions.closeSnackbarAddComments();
   };
+  
+  closeSnackbarEditComment = () => {
+    const { actions } = this.props;
+    actions.closeSnackbarEditComment();
+  };
 
   render() {
     const {
@@ -62,7 +67,8 @@ class DetailsPost extends Component {
       posts,
       openSnackbarDeleted,
       openSnackbarDeletedComments,
-      openSnackbarAddComments
+      openSnackbarAddComments,
+      openSnackbarEditComment
     } = this.props;
     const { openModalAddComments } = this.state;
 
@@ -169,12 +175,20 @@ class DetailsPost extends Component {
           onClose={this.handleCloseModalAddComments}
           parentId={details.id}
         />
+        
         <Snackbar
           autoHideDuration={2000}
           open={openSnackbarAddComments}
           onClose={this.closeSnackbarAddComments}
           ContentProps={{ className: classes.snackbar }}
           message={<span>Comment published successfully</span>}
+        />
+        <Snackbar
+          autoHideDuration={2000}
+          open={openSnackbarEditComment}
+          onClose={this.closeSnackbarEditComment}
+          ContentProps={{ className: classes.snackbar }}
+          message={<span>Comment edited successfully</span>}
         />
         <Snackbar
           autoHideDuration={2000}
@@ -201,8 +215,9 @@ DetailsPost.propTypes = {
   details: PropTypes.object.isRequired,
   commentsPost: PropTypes.array.isRequired,
   posts: PropTypes.array.isRequired,
-  openSnackbarDeletedComments: PropTypes.bool.isRequired,
   openSnackbarAddComments: PropTypes.bool.isRequired,
+  openSnackbarEditComment: PropTypes.bool.isRequired,
+  openSnackbarDeletedComments: PropTypes.bool.isRequired,
   openSnackbarDeleted: PropTypes.bool.isRequired
 };
 

@@ -3,8 +3,10 @@ import * as types from "../actions/types";
 const initialState = {
   details: {},
   commentsPost: [],
+  openSnackbarAddComments: false,
+  openSnackbarEditComment: false,
   openSnackbarDeletedComments: false,
-  openSnackbarAddComments: false
+  openSnackbarEditPost: false
 };
 
 export default function reduce(state = initialState, action) {
@@ -63,7 +65,29 @@ export default function reduce(state = initialState, action) {
         ...state,
         openSnackbarDeleted: false
       };
-    default:
+      case `${types.PUT_EDIT_COMMENT}`:
+      return {
+        ...state,
+        ...payload,
+        openSnackbarEditComment: true
+      };
+      case `${types.PUT_EDIT_POST}`:
+      return {
+        ...state,
+        ...payload,
+        openSnackbarEditPost: true
+      };
+      case `${types.CLOSE_SNACKBAR_EDIT_POST}`:
+      return {
+        ...state,
+        openSnackbarEditPost: false,
+      };
+      case `${types.CLOSE_SNACKBAR_EDIT_COMMENT}`:
+      return {
+        ...state,
+        openSnackbarEditComment: false
+      };
+      default:
       return state;
   }
 }

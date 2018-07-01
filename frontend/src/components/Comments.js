@@ -16,8 +16,10 @@ import { Input } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 import ModalDelete from "./ModalDelete";
+import ModalEditComments from "./ModalEditComments";
 
 import styles from "./styles";
 
@@ -25,7 +27,8 @@ class Comments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openModal: false
+      openModal: false,
+      openModalEdit: false
     };
   }
 
@@ -35,6 +38,15 @@ class Comments extends Component {
 
   handleCloseModal = () => {
     this.setState({ openModal: false });
+  };
+
+  handleClickOpenModalEdit = () => {
+    this.setState({ openModalEdit: true });
+  };
+
+  handleCloseModalEdit = () => {
+    this.setState({ openModalEdit: false });
+
   };
 
   handleIncrementVoteScoreComments(id) {
@@ -53,13 +65,20 @@ class Comments extends Component {
     this.handleCloseModal();
   }
 
+  handleEditComment = (id, date, body) => {
+    const { actions} = this.props;
+    actions.putEditComment(id, date, body);
+    this.handleCloseModalEdit();
+  };
+
+
   render() {
     const { classes, id, author, body, voteScore, date } = this.props;
-    const { openModal } = this.state;
+    const { openModal, openModalEdit } = this.state;
 
     return (
       <div>
-        <Paper className={classes.rootComments} elevation={2}>
+          <Paper className={classes.rootComments} elevation={2}>
           <Grid container>
             <Grid
               container
@@ -118,6 +137,15 @@ class Comments extends Component {
               item
               xs={1}
             >
+
+               <Button
+                mini
+                color="primary"
+                onClick={this.handleClickOpenModalEdit}
+              >
+                <EditIcon />
+              </Button>
+
               <Button
                 mini
                 color="secondary"
@@ -128,11 +156,20 @@ class Comments extends Component {
             </Grid>
           </Grid>
         </Paper>
-
+      
         <ModalDelete
           open={openModal}
           onClose={this.handleCloseModal}
           onDelete={() => this.handleDeleteComments(id)}
+        />
+
+        <ModalEditComments
+          open={openModalEdit}
+          onClose={this.handleCloseModalEdit}
+          onEdit={this.handleEditComment}
+          author={author}
+          body={body}
+          id={id}
         />
       </div>
     );
