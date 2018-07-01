@@ -30,38 +30,7 @@ Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e gran
         - Redux Thunk - `npm install redux-thunk`
         - Axios - `npm install axios`
         - UUID - `npm install uuid`
-
-    * Estrutura e organização
-        ```
-            -src
-                -components
-                    -Template
-                        IconHome.js
-                        IconReact.js
-                        IconRedux.js
-                        IconUdacity.js
-                        Template.js
-                -containers
-                    -Home
-                        -actions 
-                            HomeActions.js
-                            HomeApi.js
-                            types.js
-                        -reducers
-                            HomeReducer.js
-                        Home.js
-                        index.js
-                    -ReactPage
-                    -ReduxPage
-                    -UdacityPage
-                -store
-                    configureStore.js
-                    rootReducer.js
-                App.js
-                index.css
-                index.js
-        ```
-    
+   
 * Back
     * API disponibilizada pela Udacity.
 
@@ -80,7 +49,7 @@ Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e gran
 * API (Heroku)
     - Heroku é uma plataforma de serviço em nuvem (PaaS) suportando várias linguagens de programação.
     - Para facilitar o desenvolvimento do projeto foi utilizado o Heroku para hospedagem do back "api-server".
-    - Endpoit `https://api-server-readable.herokuapp.com"`
+    - Endpoit `https://api-server-readable.herokuapp.com`
 
 * Front (Em outra janela do terminal)
     - `cd frontend`
