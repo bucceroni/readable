@@ -59,5 +59,14 @@ Desenvolvido por meio da biblioteca de JavaScript React, utilizando Redux e gran
  
 <hr>
 
+## SonarCloud
+
+* Continuous Code Quality
+    - Plataforma online utilizada para analisar a qualidade do código, detectar bugs e vulnerabilidades em todo o processo de desenvolvimento. 
+    - A configuração é simples, realizada na própria plataforma fornecem todos os passos, necessário incluir PATH no sistema, adicionar arquivo `sonar-project.properties` no projeto e executar script de acordo com o token gerado na plataforma.
+    - Resultado do projeto disponível em:
+        - `https://sonarcloud.io/dashboard?id=readable`
+<hr>
+
 ## API
 Information about the API server and how to use it can be found in its [README file](api-server/README.md).
