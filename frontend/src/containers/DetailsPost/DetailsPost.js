@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../actions/actions";
 
+import { withRouter } from "react-router";
+import { compose } from "redux";
+
 import { Typography, Paper, Button, Snackbar } from "@material-ui/core";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -14,6 +17,7 @@ import AddIcon from "@material-ui/icons/Add";
 import Post from "../../components/Post";
 import Comments from "../../components/Comments";
 import ModalAddComments from "../../components/ModalAddComments";
+import NotFound from "../NotFound/NotFound";
 
 import styles from "./styles";
 
@@ -22,8 +26,8 @@ class DetailsPost extends Component {
     openModalAddComments: false
   };
   componentDidMount() {
-    const { actions } = this.props;
     const {
+      actions,
       match: { params }
     } = this.props;
     actions.getPosts();
@@ -40,8 +44,9 @@ class DetailsPost extends Component {
   };
 
   closeSnackbar = () => {
-    const { actions } = this.props;
+    const { actions, history } = this.props;
     actions.closeSnackbar();
+    history.goBack()
   };
 
   closeSnackbarDeletedComments = () => {
@@ -53,10 +58,15 @@ class DetailsPost extends Component {
     const { actions } = this.props;
     actions.closeSnackbarAddComments();
   };
-  
+
   closeSnackbarEditComment = () => {
     const { actions } = this.props;
     actions.closeSnackbarEditComment();
+  };
+
+  closeSnackbarEditPost = () => {
+    const { actions } = this.props;
+    actions.closeSnackbarEditPost();
   };
 
   render() {
@@ -68,7 +78,8 @@ class DetailsPost extends Component {
       openSnackbarDeleted,
       openSnackbarDeletedComments,
       openSnackbarAddComments,
-      openSnackbarEditComment
+      openSnackbarEditComment,
+      openSnackbarEditPost
     } = this.props;
     const { openModalAddComments } = this.state;
 
@@ -84,9 +95,11 @@ class DetailsPost extends Component {
             item
             xs={9}
           >
-            <Typography variant="display1" gutterBottom>
-              Details Post
-            </Typography>
+            {details.id && (
+              <Typography variant="display1" gutterBottom>
+                Details Post
+              </Typography>
+            )}
           </Grid>
 
           <Grid
@@ -126,19 +139,21 @@ class DetailsPost extends Component {
                 voteScore={post.voteScore}
                 date={post.timestamp}
                 category={post.category}
+                timestamp={post.timestamp}
               />
             );
           } else {
             return null;
           }
         })}
-        {!details.id && (
+        {!details.id && <NotFound />}
+        {/* {!details.id && (
           <Paper className={classes.noComments} elevation={4}>
             <Typography variant="subheading" gutterBottom>
               Ops!!! Post deleted
             </Typography>
           </Paper>
-        )}
+        )} */}
 
         {details.id && commentsPost.length > 0 ? (
           <Paper className={classes.root} elevation={4}>
@@ -162,20 +177,22 @@ class DetailsPost extends Component {
               }
             })}
           </Paper>
-        ) : (details.id &&
-          <Paper className={classes.noComments} elevation={4}>
-            <Typography variant="subheading" gutterBottom>
-              No comments
-            </Typography>
-          </Paper>
+        ) : (
+          details.id && (
+            <Paper className={classes.noComments} elevation={4}>
+              <Typography variant="subheading" gutterBottom>
+                No comments
+              </Typography>
+            </Paper>
+          )
         )}
-        
+
         <ModalAddComments
           open={openModalAddComments}
           onClose={this.handleCloseModalAddComments}
           parentId={details.id}
         />
-        
+
         <Snackbar
           autoHideDuration={2000}
           open={openSnackbarAddComments}
@@ -204,6 +221,14 @@ class DetailsPost extends Component {
           ContentProps={{ className: classes.snackbar }}
           message={<span>Deleted successfully</span>}
         />
+
+        <Snackbar
+          autoHideDuration={2000}
+          open={openSnackbarEditPost}
+          onClose={this.closeSnackbarEditPost}
+          ContentProps={{ className: classes.snackbar }}
+          message={<span>Post edit successfully</span>}
+        />
       </div>
     );
   }
@@ -217,6 +242,7 @@ DetailsPost.propTypes = {
   posts: PropTypes.array.isRequired,
   openSnackbarAddComments: PropTypes.bool.isRequired,
   openSnackbarEditComment: PropTypes.bool.isRequired,
+  openSnackbarEditPost: PropTypes.bool.isRequired,
   openSnackbarDeletedComments: PropTypes.bool.isRequired,
   openSnackbarDeleted: PropTypes.bool.isRequired
 };
@@ -225,7 +251,8 @@ const mapStateToProps = state => {
   return {
     ...state.detailsPost,
     posts: state.home.posts,
-    openSnackbarDeleted: state.home.openSnackbarDeleted
+    openSnackbarDeleted: state.home.openSnackbarDeleted,
+    openSnackbarEditPost: state.home.openSnackbarEditPost
   };
 };
 
@@ -240,7 +267,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(DetailsPost));
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  withRouter,
+  withStyles(styles, { withTheme: true })
+)(DetailsPost);

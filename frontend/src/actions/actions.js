@@ -1,7 +1,6 @@
 import api from "./api";
 import * as types from "./types";
 
-//HOME
 export function getPosts() {
   return async dispatch => {
     dispatch({
@@ -11,7 +10,6 @@ export function getPosts() {
   };
 }
 
-//POST
 export function incrementVoteScore(id) {
   const vote = "upVote";
   return async (dispatch, getState) => {
@@ -60,7 +58,6 @@ export function deletePost(id) {
   };
 }
 
-//NEWPOST
 export function getCategories() {
   return async dispatch => {
     dispatch({
@@ -94,14 +91,13 @@ export function closeSnackbar() {
   };
 }
 
-//EDITPOST
 export function putEditPost(id, title, body) {
   return async (dispatch, getState) => {
     const post = await api.putEditPost(id, title, body);
     const posts = getState().home.posts.map( item => {
        if(item.id === post.id){
-         item.body = post.body;
          item.title = post.title
+         item.body = post.body
        }
        return item
      });
@@ -120,7 +116,6 @@ export function closeSnackbarEditPost() {
   };
 }
 
-//DETAILSPOST
 export function getDetailsPost(id) {
   return async dispatch => {
     dispatch({
@@ -220,19 +215,28 @@ export function closeSnackbarDeletedComments() {
   };
 }
 
+export function getDetailsComment(id) {
+  return async dispatch => {
+    dispatch({
+      type: types.GET_DETAILS_COMMENT,
+      payload: await api.getDetailsComment(id)
+    });
+  };
+}
+
 export function putEditComment(id, timestamp, body) {
   return async (dispatch, getState) => {
     const comment = await api.putEditComment(id, timestamp, body);
-    const commentsPost = getState().detailsPost.commentsPost.map( item => {
-       if(item.id === comment.id){
-         item.body = comment.body;
-         item.timestamp = comment.timestamp
-       }
-       return item
-     });
+    const comments = getState().detailsPost.commentsPost.map(item => {
+      if(item.id === comment.id){
+        item.timestamp = comment.timestamp
+        item.body = comment.body
+      }
+      return item
+    });
     dispatch({
       type: types.PUT_EDIT_COMMENT,
-      payload: {commentsPost}
+      payload: comments
     });
   };
 }
@@ -244,38 +248,3 @@ export function closeSnackbarEditComment() {
     });
   };
 }
-
-// export function cleanDetailsPost() {
-//   return dispatch => {
-//     dispatch({
-//       type: types.CLEAN_DETAILS_POST
-//     });
-//   };
-// }
-
-// export function getPostsCategoryReact(category) {
-//   return async dispatch => {
-//     dispatch({
-//       type: types.GET_POSTS_CATEGORY_REACT,
-//       payload: await api.getPostsCategory(category)
-//     });
-//   };
-// }
-
-// export function getPostsCategoryRedux(category) {
-//   return async dispatch => {
-//     dispatch({
-//       type: types.GET_POSTS_CATEGORY_REDUX,
-//       payload: await api.getPostsCategory(category)
-//     });
-//   };
-// }
-
-// export function getPostsCategoryUdacity(category) {
-//   return async dispatch => {
-//     dispatch({
-//       type: types.GET_POSTS_CATEGORY_UDACITY,
-//       payload: await api.getPostsCategory(category)
-//     });
-//   };
-// }

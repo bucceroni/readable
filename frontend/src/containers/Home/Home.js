@@ -46,8 +46,18 @@ class Home extends Component {
     actions.closeSnackbar();
   };
 
+  closeSnackbarEditPost = () => {
+    const { actions } = this.props;
+    actions.closeSnackbarEditPost();
+  };
+
   render() {
-    const { posts, classes, openSnackbarDeleted } = this.props;
+    const {
+      posts,
+      classes,
+      openSnackbarDeleted,
+      openSnackbarEditPost
+    } = this.props;
     const { selectedSort, listSort } = this.state;
 
     if (selectedSort === "score") {
@@ -108,10 +118,11 @@ class Home extends Component {
                 voteScore={post.voteScore}
                 date={post.timestamp}
                 category={post.category}
+                timestamp={post.timestamp}
               />
             );
-          }else{
-            return null
+          } else {
+            return null;
           }
         })}
 
@@ -122,6 +133,14 @@ class Home extends Component {
           ContentProps={{ className: classes.snackbar }}
           message={<span>Deleted successfully</span>}
         />
+
+        <Snackbar
+          autoHideDuration={2000}
+          open={openSnackbarEditPost}
+          onClose={this.closeSnackbarEditPost}
+          ContentProps={{ className: classes.snackbar }}
+          message={<span>Post edit successfully</span>}
+        />
       </div>
     );
   }
@@ -130,7 +149,8 @@ class Home extends Component {
 Home.propTypes = {
   actions: PropTypes.object.isRequired,
   posts: PropTypes.array.isRequired,
-  openSnackbarDeleted: PropTypes.bool.isRequired
+  openSnackbarDeleted: PropTypes.bool.isRequired,
+  openSnackbarEditPost: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {

@@ -2,11 +2,11 @@ import * as types from "../actions/types";
 
 const initialState = {
   details: {},
+  detailsComment: {},
   commentsPost: [],
   openSnackbarAddComments: false,
   openSnackbarEditComment: false,
-  openSnackbarDeletedComments: false,
-  openSnackbarEditPost: false
+  openSnackbarDeletedComments: false
 };
 
 export default function reduce(state = initialState, action) {
@@ -16,6 +16,11 @@ export default function reduce(state = initialState, action) {
       return {
         ...state,
         details: payload
+      };
+    case `${types.GET_DETAILS_COMMENT}`:
+      return {
+        ...state,
+        detailsComment: payload
       };
     case `${types.GET_DETAILS_COMMENTS_POST}`:
       return {
@@ -32,6 +37,17 @@ export default function reduce(state = initialState, action) {
         ...state,
         commentsPost: payload
       };
+    case `${types.POST_ADD_COMMENTS}`:
+      return {
+        ...state,
+        commentsPost: payload,
+        openSnackbarAddComments: true
+      };
+    case `${types.CLOSE_SNACKBAR_ADD_COMMENTS}`:
+      return {
+        ...state,
+        openSnackbarAddComments: false
+      };
     case `${types.DELETE_COMMENTS}`:
       return {
         ...state,
@@ -43,51 +59,29 @@ export default function reduce(state = initialState, action) {
         ...state,
         openSnackbarDeletedComments: false
       };
-    case `${types.POST_ADD_COMMENTS}`:
+    case `${types.PUT_EDIT_COMMENT}`:
       return {
         ...state,
         commentsPost: payload,
-        openSnackbarAddComments: true
+        openSnackbarEditComment: true
       };
-      case `${types.CLOSE_SNACKBAR_ADD_COMMENTS}`:
+    case `${types.CLOSE_SNACKBAR_EDIT_COMMENT}`:
       return {
         ...state,
-        openSnackbarAddComments: false
+        openSnackbarEditComment: false
       };
-      case `${types.DELETE_POST}`:
+    case `${types.DELETE_POST}`:
       return {
         ...state,
         ...payload,
         openSnackbarDeleted: true
       };
-      case `${types.CLOSE_SNACKBAR}`:
+    case `${types.CLOSE_SNACKBAR}`:
       return {
         ...state,
         openSnackbarDeleted: false
       };
-      case `${types.PUT_EDIT_COMMENT}`:
-      return {
-        ...state,
-        ...payload,
-        openSnackbarEditComment: true
-      };
-      case `${types.PUT_EDIT_POST}`:
-      return {
-        ...state,
-        ...payload,
-        openSnackbarEditPost: true
-      };
-      case `${types.CLOSE_SNACKBAR_EDIT_POST}`:
-      return {
-        ...state,
-        openSnackbarEditPost: false,
-      };
-      case `${types.CLOSE_SNACKBAR_EDIT_COMMENT}`:
-      return {
-        ...state,
-        openSnackbarEditComment: false
-      };
-      default:
+    default:
       return state;
   }
 }

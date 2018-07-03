@@ -6,8 +6,10 @@ import { bindActionCreators } from "redux";
 import * as actions from "../actions/actions";
 
 import moment from "moment";
-
+import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
+import { compose } from "redux";
+
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -32,23 +34,6 @@ class Comments extends Component {
     };
   }
 
-  handleClickOpenModal = () => {
-    this.setState({ openModal: true });
-  };
-
-  handleCloseModal = () => {
-    this.setState({ openModal: false });
-  };
-
-  handleClickOpenModalEdit = () => {
-    this.setState({ openModalEdit: true });
-  };
-
-  handleCloseModalEdit = () => {
-    this.setState({ openModalEdit: false });
-
-  };
-
   handleIncrementVoteScoreComments(id) {
     const { actions } = this.props;
     actions.incrementVoteScoreComments(id);
@@ -59,18 +44,33 @@ class Comments extends Component {
     actions.decrementVoteScoreComments(id);
   }
 
+  handleClickOpenModal = () => {
+    this.setState({ openModal: true });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ openModal: false });
+  };
+
   handleDeleteComments(id) {
     const { actions } = this.props;
     actions.deleteComments(id);
     this.handleCloseModal();
   }
 
+  handleClickOpenModalEdit = () => {
+    this.setState({ openModalEdit: true });
+  };
+
+  handleCloseModalEdit = () => {
+    this.setState({ openModalEdit: false });
+  };
+
   handleEditComment = (id, date, body) => {
-    const { actions} = this.props;
+    const { actions } = this.props;
     actions.putEditComment(id, date, body);
     this.handleCloseModalEdit();
   };
-
 
   render() {
     const { classes, id, author, body, voteScore, date } = this.props;
@@ -78,7 +78,7 @@ class Comments extends Component {
 
     return (
       <div>
-          <Paper className={classes.rootComments} elevation={2}>
+        <Paper className={classes.rootComments} elevation={2}>
           <Grid container>
             <Grid
               container
@@ -120,10 +120,11 @@ class Comments extends Component {
                 disableUnderline={true}
                 multiline
                 fullWidth
-                defaultValue={body}
+                value={body}
               />
               <Typography variant="caption" gutterBottom>
-                Published: {moment(date).format("DD/MM/YYYY")}<br />
+                Published: {moment(date).format("DD/MM/YYYY")}
+                <br />
                 Author: {author}
               </Typography>
             </Grid>
@@ -137,12 +138,7 @@ class Comments extends Component {
               item
               xs={1}
             >
-
-               <Button
-                mini
-                color="primary"
-                onClick={this.handleClickOpenModalEdit}
-              >
+              <Button mini onClick={this.handleClickOpenModalEdit}>
                 <EditIcon />
               </Button>
 
@@ -156,7 +152,7 @@ class Comments extends Component {
             </Grid>
           </Grid>
         </Paper>
-      
+
         <ModalDelete
           open={openModal}
           onClose={this.handleCloseModal}
@@ -203,7 +199,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(Comments));
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  withRouter,
+  withStyles(styles, { withTheme: true })
+)(Comments);

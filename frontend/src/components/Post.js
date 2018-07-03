@@ -13,16 +13,17 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { Input } from "@material-ui/core";
+import { Input, Badge, Tooltip } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import MessageIcon from "@material-ui/icons/Message";
-import PageViewIcon from "@material-ui/icons/Pageview";
+import RemoveRedEyeIcon from "@material-ui/icons/RemoveRedEye";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
 import IconCategory from "./IconCategory";
 import ModalDelete from "./ModalDelete";
+import ModalEditPost from "./ModalEditPost";
 
 import styles from "./styles";
 
@@ -30,7 +31,8 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      openModal: false
+      openModal: false,
+      openModalEdit: false
     };
   }
 
@@ -59,11 +61,26 @@ class Post extends Component {
     this.handleCloseModal();
   }
 
+  handleClickOpenModalEdit = () => {
+    this.setState({ openModalEdit: true });
+  };
+
+  handleCloseModalEdit = () => {
+    this.setState({ openModalEdit: false });
+  };
+
+  handleEditPost = (id, title, body) => {
+    const { actions } = this.props;
+    actions.putEditPost(id, title, body);
+    this.handleCloseModalEdit();
+  };
+
   render() {
     const {
       classes,
       id,
       title,
+      timestamp,
       author,
       body,
       commentCount,
@@ -71,7 +88,7 @@ class Post extends Component {
       date,
       category
     } = this.props;
-    const { openModal } = this.state;
+    const { openModal, openModalEdit } = this.state;
 
     return (
       <div>
@@ -105,6 +122,22 @@ class Post extends Component {
               <Typography variant="caption" gutterBottom>
                 Author: {author}
               </Typography>
+            </Grid>
+
+            <Grid
+              container
+              wrap="nowrap"
+              alignItems="center"
+              direction="column"
+              justify="center"
+              item
+              xs={1}
+            >
+              <Tooltip id="tooltip-left" title="View" placement="left">
+                <Button color="primary" component={Link} to={`/${category}/${id}`}>
+                  <RemoveRedEyeIcon />
+                </Button>
+              </Tooltip>
             </Grid>
           </Grid>
 
@@ -149,7 +182,7 @@ class Post extends Component {
                 disableUnderline={true}
                 multiline
                 fullWidth
-                defaultValue={body}
+                value={body}
               />
 
               <Typography variant="caption" gutterBottom>
@@ -166,33 +199,40 @@ class Post extends Component {
               item
               xs={1}
             >
-              <Button
-                color="primary"
-                component={Link}
-                to={`/${category}/${id}`}
-              >
-                <PageViewIcon />
-              </Button>
+              <Tooltip id="tooltip-left" title="Edit" placement="left">
+                <Button
+                  mini
+                  onClick={this.handleClickOpenModalEdit}
+                >
+                  <EditIcon />
+                </Button>
+              </Tooltip>
 
-              <Button
-                color="primary"
-                component={Link}
-                to={`/editPost/${id}`}
-              >
-                 <EditIcon />
-              </Button>
-           
+              <Tooltip id="tooltip-left" title="Delete" placement="left">
+                <Button
+                  mini
+                  color="secondary"
+                  onClick={this.handleClickOpenModal}
+                >
+                  <DeleteIcon />
+                </Button>
+              </Tooltip>
 
-              <Button
-                mini
-                color="secondary"
-                onClick={this.handleClickOpenModal}
-              >
-                <DeleteIcon />
-              </Button>
-
-              <MessageIcon color="primary" />
-              <div>{commentCount}</div>
+              <Tooltip id="tooltip-left" title="Comments" placement="left">
+                <Button
+                  color="primary"
+                  component={Link}
+                  to={`/${category}/${id}`}
+                >
+                  <Badge
+                    className={classes.margin}
+                    badgeContent={commentCount}
+                    color="primary"
+                  >
+                    <MessageIcon color="primary" />
+                  </Badge>
+                </Button>
+              </Tooltip>
             </Grid>
           </Grid>
         </Paper>
@@ -201,6 +241,17 @@ class Post extends Component {
           open={openModal}
           onClose={this.handleCloseModal}
           onDelete={() => this.handleDeletePost(id)}
+        />
+
+        <ModalEditPost
+          open={openModalEdit}
+          onClose={this.handleCloseModalEdit}
+          onEdit={this.handleEditPost}
+          author={author}
+          body={body}
+          timestamp={timestamp}
+          title={title}
+          id={id}
         />
       </div>
     );
@@ -217,7 +268,8 @@ Post.propTypes = {
   voteScore: PropTypes.number.isRequired,
   body: PropTypes.string.isRequired,
   date: PropTypes.number.isRequired,
-  category: PropTypes.string.isRequired
+  category: PropTypes.string.isRequired,
+  timestamp: PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => {

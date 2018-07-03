@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as actions from "../../actions/actions";
 
-import { Typography, Snackbar } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import { Typography, Snackbar } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 
 import Post from "../../components/Post";
@@ -30,7 +30,6 @@ class ReduxPage extends Component {
       ]
     };
   }
-
   componentDidMount() {
     const { actions } = this.props;
     actions.getPosts();
@@ -47,8 +46,18 @@ class ReduxPage extends Component {
     actions.closeSnackbar();
   };
 
+  closeSnackbarEditPost = () => {
+    const { actions } = this.props;
+    actions.closeSnackbarEditPost();
+  };
+
   render() {
-    const { posts, classes, openSnackbarDeleted } = this.props;
+    const {
+      posts,
+      classes,
+      openSnackbarDeleted,
+      openSnackbarEditPost
+    } = this.props;
     const { selectedSort, listSort } = this.state;
 
     if (selectedSort === "score") {
@@ -60,6 +69,7 @@ class ReduxPage extends Component {
         return b.timestamp - a.timestamp;
       });
     }
+
     return (
       <div>
         <Grid container>
@@ -94,7 +104,6 @@ class ReduxPage extends Component {
             />
           </Grid>
         </Grid>
-
         {posts.map(
           post =>
             post.category === "redux" ? (
@@ -108,6 +117,7 @@ class ReduxPage extends Component {
                 voteScore={post.voteScore}
                 date={post.timestamp}
                 category={post.category}
+                timestamp={post.timestamp}
               />
             ) : null
         )}
@@ -119,6 +129,14 @@ class ReduxPage extends Component {
           ContentProps={{ className: classes.snackbar }}
           message={<span>Deleted successfully</span>}
         />
+
+        <Snackbar
+          autoHideDuration={2000}
+          open={openSnackbarEditPost}
+          onClose={this.closeSnackbarEditPost}
+          ContentProps={{ className: classes.snackbar }}
+          message={<span>Post edit successfully</span>}
+        />
       </div>
     );
   }
@@ -127,7 +145,8 @@ class ReduxPage extends Component {
 ReduxPage.propTypes = {
   actions: PropTypes.object.isRequired,
   posts: PropTypes.array.isRequired,
-  openSnackbarDeleted: PropTypes.bool.isRequired
+  openSnackbarDeleted: PropTypes.bool.isRequired,
+  openSnackbarEditPost: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => {

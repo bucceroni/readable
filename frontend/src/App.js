@@ -1,35 +1,28 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as actions from "./actions/actions";
-
+import Template from "../src/components/Template";
 import Home from "./containers/Home/Home";
-import UdacityPage from "./containers/UdacityPage/UdacityPage";
+import NewPost from "./containers/NewPost/NewPost";
+import DetailsPost from "./containers/DetailsPost/DetailsPost";
 import ReactPage from "./containers/ReactPage/ReactPage";
 import ReduxPage from "./containers/ReduxPage/ReduxPage";
-import NewPost from "./containers/NewPost/NewPost";
-import EditPost from "./containers/EditPost/EditPost";
-import DetailsPost from "./containers/DetailsPost/DetailsPost";
+import UdacityPage from "./containers/UdacityPage/UdacityPage";
 import NotFound from "../src/containers/NotFound/NotFound";
-import Template from "../src/components/Template";
 
 class App extends Component {
   render() {
-
     return (
       <Router>
         <Template>
           <Switch>
-            <Route exact path='/' render={({history})  => (<Home history={history} />)}/>
+            <Route exact path="/" component={Home} />
             <Route path="/newPost" component={NewPost} />
-            <Route path="/editPost/:id" component={EditPost} />
             <Route path="/:category/:id" component={DetailsPost} />
             <Route path="/react" component={ReactPage} />
             <Route path="/udacity" component={UdacityPage} />
             <Route path="/redux" component={ReduxPage} />
-            <Route component={NotFound} /> 
+            <Route component={NotFound} />
           </Switch>
         </Template>
       </Router>
@@ -37,24 +30,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    ...state.home
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: bindActionCreators(
-      {
-        ...actions
-      },
-      dispatch
-    )
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default App;

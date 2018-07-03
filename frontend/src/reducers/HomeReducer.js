@@ -2,7 +2,8 @@ import * as types from "../actions/types";
 
 const initialState = {
     posts: [],
-    openSnackbarDeleted: false
+    openSnackbarDeleted: false,
+    openSnackbarEditPost: false
 };
 
 export default function reduce(state = initialState, action) {
@@ -34,6 +35,17 @@ export default function reduce(state = initialState, action) {
       return {
         ...state,
         openSnackbarDeleted: false
+      };
+      case `${types.PUT_EDIT_POST}`:
+      return {
+        ...state,
+        ...payload,
+        openSnackbarEditPost: true
+      };
+    case `${types.CLOSE_SNACKBAR_EDIT_POST}`:
+      return {
+        ...state,
+        openSnackbarEditPost: false
       };
     default:
       return state;

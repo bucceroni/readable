@@ -192,6 +192,17 @@ class Api {
     }
   }
 
+  //`GET /comments/:id`
+  //Get the details for a single comment.
+  static async getDetailsComment(id) {
+    const res = await axios.get(`${api}/comments/${id}`, { headers });
+    if (res.status >= 200 && res.status <= 207) {
+      return res.data;
+    } else {
+      throw new Error(`HTTP status ${res.status}`);
+    }
+  }
+
   //`PUT /posts/:id`
   //Edit the details of an existing post.
   //**title** - [String]
@@ -213,14 +224,3 @@ class Api {
   }
 }
 export default Api;
-
-// //`GET /comments/:id`
-// //Get the details for a single comment.
-// static async getDetailsComment(id) {
-//   const res = await axios.get(`${api}/comments/${id}`, { headers });
-//   if (res.status >= 200 && res.status <= 207) {
-//     return res.data;
-//   } else {
-//     throw new Error(`HTTP status ${res.status}`);
-//   }
-// }
